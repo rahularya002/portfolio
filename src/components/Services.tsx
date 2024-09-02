@@ -67,7 +67,7 @@ export default function Services() {
               image: "/dm.jpg",
               icon: <StoreIcon className="h-8 w-8 text-primary" />,
               title: "Digital Marketing",
-              description: "Crafting effective digital marketing strategies to reach your target audience.",
+              description: "Crafting digital marketing strategies to reach target audience.",
             },
           ].map((service, index) => (
             <ServiceCard
@@ -109,13 +109,15 @@ function ServiceCard({ image, icon, title, description }: ServiceCardProps) {
         {icon}
         <h3 className="text-xl font-bold">{title}</h3>
         <p className="text-muted-foreground text-base sm:text-lg">{description}</p>
-            <Link
-              href="#"
-              className="inline-flex h-8 items-center justify-center rounded-md bg-primary px-4 text-sm font-medium text-primary-foreground shadow transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
-              prefetch={false}
-            >
-              <ShinyButton text="Learn More" />
-            </Link>
+        <ShinyButton text="Learn More" className="bg-transparent border border-primary text-primary">
+          <Link
+            href="#"
+            className="inline-flex h-8 items-center justify-center rounded-md px-4 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 "
+            prefetch={false}
+          >
+            Learn More
+          </Link>
+        </ShinyButton>
       </div>
     </div>
   );

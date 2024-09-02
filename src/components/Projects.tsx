@@ -57,13 +57,15 @@ export default function Projects() {
                 Crafted a user-friendly Web app for a leading healthcare provider.
               </p>
             </div>
-            <Link
-              href="#"
-              className="inline-flex h-8 items-center justify-center rounded-md bg-primary px-4 text-sm font-medium text-primary-foreground shadow transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
-              prefetch={false}
-            >
-              <ShinyButton text="Learn More" />
-            </Link>
+            <ShinyButton text="Learn More" className="bg-transparent border border-primary text-primary">
+              <Link
+                href="#"
+                className="inline-flex h-8 items-center justify-center rounded-md px-4 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 "
+                prefetch={false}
+              >
+                Learn More
+              </Link>
+          </ShinyButton>
             {/* Add more projects here if needed */}
           </div>
         </div>

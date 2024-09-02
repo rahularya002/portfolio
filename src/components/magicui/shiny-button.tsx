@@ -30,8 +30,9 @@ interface ShinyButtonProps {
 }
 const ShinyButton = ({
   text = "shiny-button",
+  children,
   className,
-}: ShinyButtonProps) => {
+}: ShinyButtonProps & { children?: React.ReactNode }) => {
   return (
     <motion.button
       {...animationProps}
@@ -47,7 +48,7 @@ const ShinyButton = ({
             "linear-gradient(-75deg,hsl(var(--primary)) calc(var(--x) + 20%),transparent calc(var(--x) + 30%),hsl(var(--primary)) calc(var(--x) + 100%))",
         }}
       >
-        {text}
+        {children || text} {/* Render children or text */}
       </span>
       <span
         style={{
