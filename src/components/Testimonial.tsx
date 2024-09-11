@@ -7,37 +7,37 @@ const reviews = [
     name: "Jack",
     username: "@jack",
     body: "I've never seen anything like this before. It's amazing. I love it.",
-    img: "https://avatar.vercel.sh/jack",
+    img: "https://avatars.githubusercontent.com/u/16860528",
   },
   {
     name: "Jill",
     username: "@jill",
     body: "I don't know what to say. I'm speechless. This is amazing.",
-    img: "https://avatar.vercel.sh/jill",
+    img:   "https://avatars.githubusercontent.com/u/20110627",
   },
   {
     name: "John",
     username: "@john",
     body: "I'm at a loss for words. This is amazing. I love it.",
-    img: "https://avatar.vercel.sh/john",
+    img: "https://avatars.githubusercontent.com/u/106103625",
   },
   {
     name: "Jane",
     username: "@jane",
     body: "I'm at a loss for words. This is amazing. I love it.",
-    img: "https://avatar.vercel.sh/jane",
+    img: "https://avatars.githubusercontent.com/u/59228569",
   },
   {
     name: "Jenny",
     username: "@jenny",
     body: "I'm at a loss for words. This is amazing. I love it.",
-    img: "https://avatar.vercel.sh/jenny",
+    img: "https://avatars.githubusercontent.com/u/16860528",
   },
   {
     name: "James",
     username: "@james",
     body: "I'm at a loss for words. This is amazing. I love it.",
-    img: "https://avatar.vercel.sh/james",
+    img: "https://avatars.githubusercontent.com/u/20110627",
   },
 ];
 
@@ -81,7 +81,7 @@ const ReviewCard = ({
 
 export default function TestimonialSection() {
   return (
-    <section className="py-12 bg-gray-50 dark:bg-gray-900">
+    <section className="py-12 bg-gray-50 dark:bg-gray-900" id="#testimonials">
       <div className="container px-4 md:px-6">
         <div className="flex flex-col items-center justify-center h-full space-y-4 text-center mx-auto">
           <BoxReveal boxColor={"#5046e6"} duration={0.3}>

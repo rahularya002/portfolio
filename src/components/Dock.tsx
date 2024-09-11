@@ -1,6 +1,7 @@
 import React from "react";
 import Link from "next/link";
-import { HomeIcon, InfoIcon, ClipboardIcon, BriefcaseIcon, MailIcon } from "lucide-react";
+import Image from "next/image"; // Import Image component for using logo
+import { InfoIcon, ClipboardIcon, BriefcaseIcon, MailIcon } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
@@ -14,10 +15,16 @@ import {
 import { Dock, DockIcon } from "@/components/magicui/dock";
 import { ModeToggle } from "@/components/ui/mode-toggle";
 
+// Your logo import
+import Logo from "/public/md.jpg"; // Replace with your actual logo path
+
 export type IconProps = React.HTMLAttributes<SVGElement>;
 
 const Icons = {
-  home: (props: IconProps) => <HomeIcon {...props} />,
+  // Replacing the home icon with a logo
+  logo: (props: React.HTMLAttributes<HTMLImageElement>) => (
+    <Image src={Logo} alt="Logo" {...props} />
+  ),
   about: (props: IconProps) => <InfoIcon {...props} />,
   services: (props: IconProps) => <ClipboardIcon {...props} />,
   projects: (props: IconProps) => <BriefcaseIcon {...props} />,
@@ -26,11 +33,11 @@ const Icons = {
 
 const DATA = {
   navbar: [
-    { href: "#", icon: Icons.home, label: "Home" },
-    { href: "#", icon: Icons.about, label: "About" },
-    { href: "#", icon: Icons.services, label: "Services" },
-    { href: "#", icon: Icons.projects, label: "Projects" },
-    { href: "#", icon: Icons.email, label: "Contact Us" },
+    { href: "#home", icon: Icons.logo, label: "Home" }, // Navigate to the Home section
+    { href: "#services", icon: Icons.services, label: "Services" }, // Navigate to the Services section
+    { href: "#projects", icon: Icons.projects, label: "Projects" },
+    { href: "#testimonials", icon: Icons.about, label: "Testimonials" }, // Navigate to the About section // Navigate to the Projects section
+    { href: "#contact", icon: Icons.email, label: "Contact Us" }, // Navigate to the Contact section
   ],
 };
 
@@ -38,7 +45,10 @@ export function DockDemo() {
   return (
     <div>
       <TooltipProvider>
-        <Dock direction="middle" className="fixed bottom-4 left-1/2 transform -translate-x-1/2 z-20">
+        <Dock
+          direction="middle"
+          className="fixed bottom-4 left-1/2 transform -translate-x-1/2 z-20"
+        >
           {DATA.navbar.map((item) => (
             <DockIcon key={item.label}>
               <Tooltip>
@@ -47,10 +57,11 @@ export function DockDemo() {
                     href={item.href}
                     className={cn(
                       buttonVariants({ variant: "ghost", size: "icon" }),
-                      "size-12 rounded-full",
+                      "size-12 rounded-full"
                     )}
+                    scroll={false} // Disable automatic scrolling behavior from Next.js
                   >
-                    <item.icon className="size-4" />
+                    {item.icon({ className: "size-4", style: { width: 16, height: 16 } })} {/* Adjust the size as needed */}
                   </Link>
                 </TooltipTrigger>
                 <TooltipContent>

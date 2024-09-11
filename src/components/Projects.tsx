@@ -6,7 +6,7 @@ import BoxReveal from "./magicui/box-reveal";
 export default function Projects() {
   return (
     <section
-      id="projects"
+      id="#projects"
       className="relative w-full py-12 md:py-18 lg:py-20 overflow-hidden"
       style={{
         backgroundImage: "linear-gradient(135deg, #e0eafc, #cfdef3)", // Light space gradient

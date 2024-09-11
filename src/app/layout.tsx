@@ -4,6 +4,7 @@ import { Inter } from 'next/font/google'
 import { cn } from '@/lib/utils'
 import './globals.css'
 import LenisScroll from './LenisScroll'
+import { Toaster } from "@/components/ui/toaster"
 
 const fontHeading = Inter({
   subsets: ['latin'],
@@ -28,6 +29,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         )} 
       >
         <LenisScroll />
+        <Toaster />
         {children}
       </body>
     </html>

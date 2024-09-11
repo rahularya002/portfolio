@@ -69,6 +69,9 @@ const config = {
         "background-position-spin 3000ms infinite alternate",
         gradient: "gradient 8s linear infinite",
         orbit: "orbit calc(var(--duration)*1s) linear infinite",
+        grid: "grid 15s linear infinite",
+        ripple: "ripple var(--duration,2s) ease calc(var(--i, 0)*.2s) infinite",
+        move: "move 5s linear infinite",
       },
       keyframes: {
         "spin-around": {
@@ -143,6 +146,22 @@ const config = {
           to: {
             "background-position": "0% 0%",
           },
+        },
+        grid: {
+          "0%": { transform: "translateY(-50%)" },
+          "100%": { transform: "translateY(0)" },
+        },
+        ripple: {
+          "0%, 100%": {
+            transform: "translate(-50%, -50%) scale(1)",
+          },
+          "50%": {
+            transform: "translate(-50%, -50%) scale(0.9)",
+          },
+        },
+        move: {
+          "0%": { transform: "translateX(-200px)" },
+          "100%": { transform: "translateX(200px)" },
         },
       },
     },

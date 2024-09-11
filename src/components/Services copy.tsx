@@ -1,9 +1,10 @@
 import Link from "next/link";
 import Image from "next/image";
 import AnimatedShinyText from "./magicui/animated-shiny-text";
+import { CodeIcon, SmartphoneIcon, TypeIcon, FilmIcon, StoreIcon } from "./Icons";
 import ShinyButton from "./magicui/shiny-button";
 import BoxReveal from "./magicui/box-reveal";
-import { LayoutGridDemo } from "./layout-grid-demo";
+
 
 export default function Services() {
   return (
@@ -31,9 +32,53 @@ export default function Services() {
             </p>
           </BoxReveal>
         </div>
-        <div className="mx-auto m-12">
-          {/* <BentoDemo /> */}
-          <LayoutGridDemo />
+        <div className="mx-auto grid gap-6 sm:grid-cols-2 lg:grid-cols-3 max-w-5xl items-center py-12 lg:gap-12">
+          {[
+            {
+              image: "/wd.jpg",
+              icon: <CodeIcon className="h-8 w-8 text-primary" />,
+              title: "Web Development",
+              description: "Crafting responsive and scalable web applications.",
+            },
+            {
+              image: "/mad.jpg",
+              icon: <SmartphoneIcon className="h-8 w-8 text-primary" />,
+              title: "Mobile App Development",
+              description: "Building innovative and user-friendly mobile apps.",
+            },
+            {
+              image: "/ui.jpg",
+              icon: <TypeIcon className="h-8 w-8 text-primary" />,
+              title: "UX/UI Design",
+              description: "Crafting intuitive and visually appealing user experiences.",
+            },
+            {
+              image: "/ai.jpg",
+              icon: <FilmIcon className="h-8 w-8 text-primary" />,
+              title: "Ad Films with AI",
+              description: "Leveraging AI technology to create captivating ad films.",
+            },
+            {
+              image: "/sf.jpg",
+              icon: <FilmIcon className="h-8 w-8 text-primary" />,
+              title: "Short Movie Production",
+              description: "Crafting captivating short films to showcase your brand.",
+            },
+            {
+              image: "/dm.jpg",
+              icon: <StoreIcon className="h-8 w-8 text-primary" />,
+              title: "Digital Marketing",
+              description: "Crafting digital marketing strategies to reach target audience.",
+            },
+          ].map((service, index) => (
+            <ServiceCard
+              key={index}
+              image={service.image}
+              icon={service.icon}
+              title={service.title}
+              description={service.description}
+            />
+          ))}
         </div>
       </div>
     </section>

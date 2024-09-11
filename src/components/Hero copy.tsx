@@ -8,7 +8,6 @@ export default function Hero() {
     <section
       className="w-full h-screen flex items-center justify-center relative overflow-hidden bg-cover bg-center"
       style={{ backgroundImage: "url('/space2.jpg')" }} // Background for the section
-      id="#home"
     >
       <Meteors number={20} /> {/* Add meteor background */}
       <div className="container px-4 md:px-6 z-10 flex flex-col justify-end mt-22">
