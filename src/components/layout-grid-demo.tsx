@@ -171,7 +171,7 @@ const cards = [
       </div>
     ),
     className: "md:col-span-2 rounded-xl pointer-events-none",
-    // thumbnail: "/path/to/web-dev-image.jpg",
+    thumbnail: "/path/to/web-dev-image.jpg",
     background: (
       <div className="absolute inset-0 z-0 bg-white">
         {AnimatedBeamMultipleOutputDemo && <AnimatedBeamMultipleOutputDemo className="h-full w-full border-none transition-all duration-300 ease-out [mask-image:linear-gradient(to_top,transparent_10%,#000_100%)]" />}
@@ -194,7 +194,7 @@ const cards = [
       </div>
     ),
     className: "col-span-1 rounded-xl",
-    // thumbnail: "/path/to/mobile-dev-image.jpg",
+    thumbnail: "/path/to/mobile-dev-image.jpg",
     background: (
       <div className="absolute inset-0 z-0 bg-white">
         {AnimatedListDemo && <AnimatedListDemo className="h-full w-full border-none transition-all duration-300 ease-out [mask-image:linear-gradient(to_top,transparent_10%,#000_100%)] group-hover:scale-105" />}
@@ -217,7 +217,7 @@ const cards = [
       </div>
     ),
     className: "col-span-1 rounded-xl",
-    // thumbnail: "/path/to/seo-image.jpg",
+    thumbnail: "/path/to/seo-image.jpg",
     background: (
       <div className="absolute inset-0 z-0 flex items-center justify-center bg-white">
         {Ripple && (
@@ -244,7 +244,7 @@ const cards = [
       </div>
     ),
     className: "md:col-span-2 rounded-xl",
-    // thumbnail: "/path/to/video-editing-image.jpg",
+    thumbnail: "/path/to/video-editing-image.jpg",
     background: (
       <div className="absolute inset-0 z-0 bg-white">
         {RetroGrid && (
