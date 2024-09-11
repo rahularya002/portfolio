@@ -7,8 +7,8 @@ import MediaProductionSlider from "../MediaProductionSlider";
 
 type Card = {
   id: number;
-  name: string;
-  description: string;
+  name?: string;
+  description?: string;
   content: JSX.Element | React.ReactNode | string;
   className: string;
   thumbnail: string;
