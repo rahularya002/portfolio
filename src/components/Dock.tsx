@@ -1,8 +1,9 @@
+"use client";
 import React from "react";
-import Link from "next/link";
-import Image from "next/image"; // Import Image component for using logo
+import Image from "next/image";
 import { InfoIcon, ClipboardIcon, BriefcaseIcon, MailIcon } from "lucide-react";
-
+import { Link as ScrollLink } from "react-scroll";
+import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
@@ -21,7 +22,6 @@ import Logo from "/public/md.jpg"; // Replace with your actual logo path
 export type IconProps = React.HTMLAttributes<SVGElement>;
 
 const Icons = {
-  // Replacing the home icon with a logo
   logo: (props: React.HTMLAttributes<HTMLImageElement>) => (
     <Image src={Logo} alt="Logo" {...props} />
   ),
@@ -33,13 +33,36 @@ const Icons = {
 
 const DATA = {
   navbar: [
-    { href: "#home", icon: Icons.logo, label: "Home" }, // Navigate to the Home section
-    { href: "#services", icon: Icons.services, label: "Services" }, // Navigate to the Services section
-    { href: "#projects", icon: Icons.projects, label: "Projects" },
-    { href: "#testimonials", icon: Icons.about, label: "Testimonials" }, // Navigate to the About section // Navigate to the Projects section
-    { href: "#contact", icon: Icons.email, label: "Contact Us" }, // Navigate to the Contact section
+    { to: "#home", icon: Icons.logo, label: "Home" },
+    { to: "#services", icon: Icons.services, label: "Services" },
+    { to: "#projects", icon: Icons.projects, label: "Projects" },
+    { to: "#testimonials", icon: Icons.about, label: "Testimonials" },
+    { to: "#contact", icon: Icons.email, label: "Contact Us" },
   ],
 };
+
+// Custom ScrollButton component
+const ScrollButton = React.forwardRef<HTMLButtonElement, React.ComponentPropsWithoutRef<typeof Button> & { to: string }>(
+  ({ to, children, ...props }, ref) => (
+    <Button
+      {...props}
+      ref={ref}
+      onClick={() => {
+        const element = document.getElementById(to);
+        if (element) {
+          const offsetTop = element.offsetTop;
+          window.scrollTo({
+            top: offsetTop - 90,
+            behavior: 'smooth'
+          });
+        }
+      }}
+    >
+      {children}
+    </Button>
+  )
+);
+ScrollButton.displayName = "ScrollButton";
 
 export function DockDemo() {
   return (
@@ -53,16 +76,14 @@ export function DockDemo() {
             <DockIcon key={item.label}>
               <Tooltip>
                 <TooltipTrigger asChild>
-                  <Link
-                    href={item.href}
-                    className={cn(
-                      buttonVariants({ variant: "ghost", size: "icon" }),
-                      "size-12 rounded-full"
-                    )}
-                    scroll={false} // Disable automatic scrolling behavior from Next.js
+                  <ScrollButton
+                    to={item.to.slice(1)} // Remove the '#' from the beginning
+                    variant="ghost"
+                    size="icon"
+                    className="size-12 rounded-full cursor-pointer"
                   >
-                    {item.icon({ className: "size-4", style: { width: 16, height: 16 } })} {/* Adjust the size as needed */}
-                  </Link>
+                    {item.icon({ className: "size-4", style: { width: 16, height: 16 } })}
+                  </ScrollButton>
                 </TooltipTrigger>
                 <TooltipContent>
                   <p>{item.label}</p>

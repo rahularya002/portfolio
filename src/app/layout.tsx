@@ -5,6 +5,7 @@ import { cn } from '@/lib/utils'
 import './globals.css'
 import LenisScroll from './LenisScroll'
 import { Toaster } from "@/components/ui/toaster"
+import { Montserrat } from 'next/font/google'
 
 const fontHeading = Inter({
   subsets: ['latin'],
@@ -18,9 +19,14 @@ const fontBody = Inter({
   variable: '--font-body',
 })
 
+const montserrat = Montserrat({ 
+  subsets: ['latin'],
+  variable: '--font-montserrat',
+})
+
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en" className={`${montserrat.variable} font-sans`}>
       <body 
         className={cn(
           'antialiased',

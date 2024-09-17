@@ -8,30 +8,32 @@ import { LayoutGridDemo } from "./layout-grid-demo";
 export default function Services() {
   return (
     <section
-      id="#services"
-      className="w-full min-h-screen flex items-center justify-center bg-muted"
+      id="services"
+      className="w-full min-h-screen flex items-center justify-center bg-muted py-6"
       style={{
-        background: "linear-gradient(180deg, rgba(226, 215, 216) 0%, rgba(241, 245, 249, 1) 100%)",
+        background:
+          "linear-gradient(180deg, rgba(226, 215, 216) 0%, rgba(241, 245, 249, 1) 100%)",
       }}
     >
-      <div className="container px-4 md:px-6 py-12 lg:py-16">
+      <div className="container relative px-4 md:px-6 z-10">
         <div className="flex flex-col items-center justify-center space-y-4 text-center">
           <AnimatedShinyText className="inline-flex items-center justify-center px-4 py-1 transition ease-out rounded-sm hover:text-neutral-600 hover:duration-300 hover:dark:text-neutral-400">
             <span>✨ Our Services</span>
           </AnimatedShinyText>
-          <BoxReveal boxColor={"#5046e6"} duration={0.3}>
+          <BoxReveal boxColor="#5046e6" duration={0.3}>
             <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl text-center mx-auto">
               Elevating Your Digital Presence
             </h2>
           </BoxReveal>
-          <BoxReveal boxColor={"#5046e6"} duration={0.3}>
+          <BoxReveal boxColor="#5046e6" duration={0.3}>
             <p className="max-w-[900px] text-muted-foreground text-base sm:text-lg md:text-xl lg:text-lg xl:text-xl mx-auto">
-              From web development to mobile apps, UX/UI design, ad films with AI, short movie production, and
-              digital marketing, we've got you covered.
+              From web development to mobile apps, UX/UI design, ad films with AI,
+              short movie production, and digital marketing, we've got you
+              covered.
             </p>
           </BoxReveal>
         </div>
-        <div className="mx-auto m-12">
+        <div className="mx-auto mt-12">
           {/* <BentoDemo /> */}
           <LayoutGridDemo />
         </div>
@@ -47,7 +49,12 @@ interface ServiceCardProps {
   description: string;
 }
 
-function ServiceCard({ image, icon, title, description }: ServiceCardProps) {
+function ServiceCard({
+  image,
+  icon,
+  title,
+  description,
+}: ServiceCardProps) {
   return (
     <div className="relative flex flex-col justify-center space-y-4 group">
       <div className="relative overflow-hidden rounded-lg mx-auto">
@@ -64,11 +71,16 @@ function ServiceCard({ image, icon, title, description }: ServiceCardProps) {
       <div className="grid gap-1">
         {icon}
         <h3 className="text-xl font-bold">{title}</h3>
-        <p className="text-muted-foreground text-base sm:text-lg">{description}</p>
-        <ShinyButton text="Learn More" className="bg-transparent border border-primary text-primary">
+        <p className="text-muted-foreground text-base sm:text-lg">
+          {description}
+        </p>
+        <ShinyButton
+          text="Learn More"
+          className="bg-transparent border border-primary text-primary"
+        >
           <Link
             href="#"
-            className="inline-flex h-8 items-center justify-center rounded-md px-4 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 "
+            className="inline-flex h-8 items-center justify-center rounded-md px-4 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
             prefetch={false}
           >
             Learn More

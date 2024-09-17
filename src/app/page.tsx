@@ -1,3 +1,4 @@
+"use client"
 import Navbar from '@/components/Navbar'  // Updated import path
 import { DockDemo } from '@/components/Dock'
 import Hero from '@/components/Hero'
@@ -6,6 +7,7 @@ import Projects from '@/components/Projects'
 import Contact from '@/components/Contact'
 import Footer from '@/components/Footer'
 import TestimonialSection from '@/components/Testimonial'
+import { Element } from "react-scroll";
 // import TestimonialSection from '@/components/Testimonial'
 
 
@@ -15,11 +17,31 @@ export default function Home() {
       {/* <Navbar /> */}
       
       <main className="flex-grow">
-        <Hero />
-        <Services />
-        <Projects />
-        <TestimonialSection />
-        <Contact />
+        <Element name="home">
+          <section id="home">
+            <Hero />
+          </section>
+        </Element>
+        <Element name="services">
+          <section id="services">
+            <Services />
+          </section>
+        </Element>
+        <Element name="projects">
+          <section id="projects">
+            <Projects />
+          </section>
+        </Element>
+        <Element name="testimonials">
+          <section id="testimonials">
+            <TestimonialSection />
+          </section>
+        </Element>
+        <Element name="contact">
+          <section id="contact">
+            <Contact />
+          </section>
+        </Element>
         <DockDemo />
       </main>
       <Footer />

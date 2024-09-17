@@ -23,7 +23,7 @@ export default function Hero() {
                 backgroundClip: "text",
                 WebkitBackgroundClip: "text",
                 color: "transparent",
-                WebkitTextStroke: "1px white", // White stroke of 2px
+                
               }}
             >
               Leading the <br />
