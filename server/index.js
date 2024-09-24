@@ -5,7 +5,7 @@ const dotenv = require("dotenv");
 dotenv.config({ path: '.env.local' });
 
 dotenv.config();
-
+// using express
 const app = express();
 const PORT = process.env.PORT || 5000;
 
