@@ -1,9 +1,57 @@
 import Link from "next/link";
+import React from "react";
+
 import ShimmerButton from "./magicui/shimmer-button";
 import Meteors from "./magicui/meteors";
-import BoxReveal from "./magicui/box-reveal";
+import { Button } from "@/components/ui/button"; // Import Button component
+
 
 export default function Hero() {
+
+  const ScrollButton = React.forwardRef<HTMLButtonElement, React.ComponentPropsWithoutRef<typeof Button> & { to: string }>(
+    ({ to, children, ...props }, ref) => (
+      <Button
+        {...props}
+        ref={ref}
+        onClick={() => {
+          const element = document.getElementById(to);
+          if (element) {
+            const offsetTop = element.offsetTop;
+            window.scrollTo({
+              top: offsetTop - 90,
+              behavior: 'smooth'
+            });
+          }
+        }}
+      >
+        {children}
+      </Button>
+    )
+  );
+  ScrollButton.displayName = "ScrollButton";
+
+  const ScrollShimmerButton = React.forwardRef<HTMLButtonElement, React.ComponentPropsWithoutRef<typeof ShimmerButton> & { to: string }>(
+    ({ to, children, ...props }, ref) => (
+      <ShimmerButton
+        {...props}
+        ref={ref}
+        onClick={() => {
+          const element = document.getElementById(to);
+          if (element) {
+            const offsetTop = element.offsetTop;
+            window.scrollTo({
+              top: offsetTop - 90,
+              behavior: 'smooth'
+            });
+          }
+        }}
+      >
+        {children}
+      </ShimmerButton>
+    )
+  );
+  ScrollShimmerButton.displayName = "ScrollShimmerButton";
+
   return (
     <section
       className="w-full h-screen flex items-center justify-center relative overflow-hidden bg-cover bg-center"
@@ -37,11 +85,11 @@ export default function Hero() {
        
           
             <div className="flex items-center justify-center">
-              <ShimmerButton className="shadow-2xl">
-                <span className="whitespace-pre-wrap text-center text-sm font-medium leading-none tracking-tight text-white dark:from-white dark:to-slate-900/10 lg:text-lg">
-                  Get in Touch
-                </span>
-              </ShimmerButton>
+            <ScrollShimmerButton to="contact" className="shadow-2xl">
+              <span className="whitespace-pre-wrap text-center text-sm font-medium leading-none tracking-tight text-white dark:from-white dark:to-slate-900/10 lg:text-lg">
+                Get in Touch
+              </span>
+            </ScrollShimmerButton>
             </div>
           
         </div>
