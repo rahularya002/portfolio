@@ -152,10 +152,7 @@ const SpaceScene: React.FC = () => {
           }}
         >
           {/* Using the custom card from aceternity */}
-          <ThreeDCardDemo
-            title={selectedPlanet}
-            description={`Hello, I'm ${selectedPlanet}! Here is some more info about me.`}
-          />
+          <ThreeDCardDemo />
         </animated.div>
       )}
     </>
