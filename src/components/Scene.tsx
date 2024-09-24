@@ -142,13 +142,15 @@ export const Scene = ({}: SceneProps) => {
         <Bloom luminanceThreshold={0.2} mipmapBlur />
         <ChromaticAberration
           ref={effectsRef as any}
-          blendFunction={BlendFunction.NORMAL} // blend mode
+          blendFunction={BlendFunction.NORMAL}
           offset={
             new THREE.Vector2(
               CHROMATIC_ABBERATION_OFFSET,
               CHROMATIC_ABBERATION_OFFSET
             )
           }
+          radialModulation={false}
+          modulationOffset={0}
         />
       </EffectComposer>
     </>
