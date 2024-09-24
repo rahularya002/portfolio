@@ -37,13 +37,12 @@ export const Timeline = ({ data }: { data: TimelineEntry[] }) => {
       className="w-full bg-white dark:bg-neutral-950 font-sans md:px-10"
       ref={containerRef}
     >
-      <div className="max-w-7xl mx-auto py-20 px-4 md:px-8 lg:px-10">
-        <h2 className="text-lg md:text-4xl mb-4 text-black dark:text-white max-w-4xl">
+      <div className="max-w-7xl mx-auto py-20 px-4 md:px-8 lg:px-10 flex flex-col items-center text-center">
+        <h2 className="text-2xl md:text-6xl mb-4 text-black dark:text-white max-w-4xl font-['Montserrat'] font-extrabold">
           About Us
         </h2>
-        <p className="text-neutral-700 dark:text-neutral-300 text-sm md:text-base max-w-sm">
-          We&apos;ve been working on multiple Projects for the past 2 years. Here&apos;s
-          a timeline of our journey.
+        <p className="text-neutral-700 dark:text-neutral-300 text-sm md:text-base max-w-3xl">
+        At MD Infosystems Pvt. Ltd. and MD Quantum Innovations, we specialize in AI-driven solutions that transform businesses. From mobile apps and web development to digital marketing and creative content, our cutting-edge services deliver innovation and growth.
         </p>
       </div>
 

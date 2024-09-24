@@ -1,3 +1,5 @@
+import React, { useState, useEffect } from "react";
+import { useInView } from "react-intersection-observer";
 import Link from "next/link";
 import Image from "next/image";
 import AnimatedShinyText from "./magicui/animated-shiny-text";
@@ -6,6 +8,17 @@ import BoxReveal from "./magicui/box-reveal";
 import { LayoutGridDemo } from "./layout-grid-demo";
 
 export default function Services() {
+  const [key, setKey] = useState(0);
+  const { ref, inView } = useInView({
+    threshold: 0,
+  });
+
+  useEffect(() => {
+    if (!inView) {
+      setKey(prevKey => prevKey + 1);
+    }
+  }, [inView]);
+
   return (
     <section
       id="services"
@@ -20,22 +33,17 @@ export default function Services() {
           <AnimatedShinyText className="inline-flex items-center justify-center px-4 py-1 transition ease-out rounded-sm hover:text-neutral-600 hover:duration-300 hover:dark:text-neutral-400">
             <span>✨ Our Services</span>
           </AnimatedShinyText>
-          <BoxReveal boxColor="#5046e6" duration={0.3}>
-            <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl text-center mx-auto">
-              Elevating Your Digital Presence
-            </h2>
-          </BoxReveal>
-          <BoxReveal boxColor="#5046e6" duration={0.3}>
-            <p className="max-w-[900px] text-muted-foreground text-base sm:text-lg md:text-xl lg:text-lg xl:text-xl mx-auto">
-              From web development to mobile apps, UX/UI design, ad films with AI,
-              short movie production, and digital marketing, we've got you
-              covered.
-            </p>
-          </BoxReveal>
+          <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl text-center mx-auto">
+            Elevating Your Digital Presence
+          </h2>
+          <p className="max-w-[900px] text-muted-foreground text-base sm:text-lg md:text-xl lg:text-lg xl:text-xl mx-auto">
+            From web development to mobile apps, UX/UI design, ad films with AI,
+            short movie production, and digital marketing, we've got you
+            covered.
+          </p>
         </div>
-        <div className="mx-auto mt-12">
-          {/* <BentoDemo /> */}
-          <LayoutGridDemo />
+        <div ref={ref} className="mx-auto mt-12">
+          <LayoutGridDemo key={key} />
         </div>
       </div>
     </section>

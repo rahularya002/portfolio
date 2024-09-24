@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import Image from "next/image";
-import { InfoIcon, ClipboardIcon, BriefcaseIcon, MailIcon } from "lucide-react";
+import { InfoIcon, ClipboardIcon, BriefcaseIcon, MailIcon, MessageSquareIcon } from "lucide-react";
 import { Link as ScrollLink } from "react-scroll";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/tooltip";
 import { Dock, DockIcon } from "@/components/magicui/dock";
 import { ModeToggle } from "@/components/ui/mode-toggle";
+import Link from "next/link";
 
 // Your logo import
 import Logo from "/public/md.jpg"; // Replace with your actual logo path
@@ -29,6 +30,7 @@ const Icons = {
   services: (props: IconProps) => <ClipboardIcon {...props} />,
   projects: (props: IconProps) => <BriefcaseIcon {...props} />,
   email: (props: IconProps) => <MailIcon {...props} />,
+  testimonials: (props: IconProps) => <MessageSquareIcon {...props} />,
 };
 
 const DATA = {
@@ -36,7 +38,7 @@ const DATA = {
     { to: "#home", icon: Icons.logo, label: "Home" },
     { to: "#services", icon: Icons.services, label: "Services" },
     { to: "#projects", icon: Icons.projects, label: "Projects" },
-    { to: "#testimonials", icon: Icons.about, label: "Testimonials" },
+    { to: "#testimonials", icon: Icons.testimonials, label: "Testimonials" },
     { to: "#contact", icon: Icons.email, label: "Contact Us" },
   ],
 };
@@ -95,10 +97,18 @@ export function DockDemo() {
           <DockIcon>
             <Tooltip>
               <TooltipTrigger asChild>
-                <ModeToggle />
+                <Link href="/about">
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="size-12 rounded-full cursor-pointer"
+                  >
+                    <InfoIcon className="size-4" style={{ width: 16, height: 16 }} />
+                  </Button>
+                </Link>
               </TooltipTrigger>
               <TooltipContent>
-                <p>Theme</p>
+                <p>About</p>
               </TooltipContent>
             </Tooltip>
           </DockIcon>

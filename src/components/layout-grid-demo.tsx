@@ -9,12 +9,27 @@ import { SiReact } from "react-icons/si";
 import { TrendingUp, Clapperboard } from "lucide-react";
 import Ripple from "@/components/magicui/ripple";
 import RetroGrid from "./magicui/retro-grid";
-
+import { useInView } from "react-intersection-observer";
 
 export function LayoutGridDemo() {
+  const [expandedCard, setExpandedCard] = useState<number | null>(null);
+  const { ref, inView } = useInView({
+    threshold: 0,
+  });
+
+  useEffect(() => {
+    if (!inView) {
+      setExpandedCard(null);
+    }
+  }, [inView]);
+
+  const handleCardClick = (id: number) => {
+    setExpandedCard(id === expandedCard ? null : id);
+  };
+
   return (      
     <React.Fragment>
-      <div className=" h-full  w-full">
+      <div ref={ref} className="h-full w-full">
         <LayoutGrid cards={cards} />
       </div>
     </React.Fragment>

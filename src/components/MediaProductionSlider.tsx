@@ -20,9 +20,23 @@ const MediaProductionSlider = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3 }}
-            className="flex-shrink-0 w-64 h-80 bg-white rounded-lg shadow-md overflow-hidden"
+            className="flex-shrink-0 w-80 h-96 bg-white rounded-lg shadow-md overflow-hidden"
           >
-            <CardDemo2 title={card.title} description={card.description} />
+            <div className="w-full h-56">
+              <iframe
+                width="100%"
+                height="100%"
+                src="https://www.youtube.com/embed/7RJ_0m2SQO8?si=Fzo6XqLd45dfksJA"
+                title={card.title}
+                frameBorder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              ></iframe>
+            </div>
+            <div className="p-4">
+              <h3 className="text-lg font-semibold mb-2">{card.title}</h3>
+              <p className="text-sm text-gray-600">{card.description}</p>
+            </div>
           </motion.div>
         ))}
       </div>

@@ -1,5 +1,6 @@
 "use client"
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import { useInView } from 'react-intersection-observer';
 
 interface IconProps extends React.SVGProps<SVGSVGElement> {}
 
@@ -11,18 +12,26 @@ export function Achievements(): JSX.Element {
     satisfaction: 0
   });
 
+  const { ref, inView } = useInView({
+    threshold: 0.1,
+    triggerOnce: true,
+  });
+
   useEffect(() => {
-    const interval = setInterval(() => {
-      setCounts(prevCounts => ({
-        users: Math.min(prevCounts.users + 10000, 1200000),
-        uptime: Math.min(prevCounts.uptime + 1, 99.9),
-        customers: Math.min(prevCounts.customers + 5, 500),
-        satisfaction: Math.min(prevCounts.satisfaction + 0.1, 4.9)
-      }));
-    }, 50);
+    let interval: NodeJS.Timeout;
+    if (inView) {
+      interval = setInterval(() => {
+        setCounts(prevCounts => ({
+          users: Math.min(prevCounts.users + 10000, 1200000),
+          uptime: Math.min(prevCounts.uptime + 1, 99.9),
+          customers: Math.min(prevCounts.customers + 5, 500),
+          satisfaction: Math.min(prevCounts.satisfaction + 0.1, 4.9)
+        }));
+      }, 50);
+    }
 
     return () => clearInterval(interval);
-  }, []);
+  }, [inView]);
 
   return (
     <section className="bg-black text-white min-h-screen py-12 md:py-16 lg:py-20 flex items-center justify-center">
@@ -33,7 +42,7 @@ export function Achievements(): JSX.Element {
             We've accomplished a lot in a short amount of time. Check out our key achievements below.
           </p>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div ref={ref} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           <div className="bg-gray-900 rounded-lg p-6 flex flex-col items-center justify-center text-center">
             <GaugeIcon className="w-10 h-10 mb-4 text-blue-500" />
             <div className="text-4xl font-bold mb-2">{counts.users.toLocaleString()}+</div>

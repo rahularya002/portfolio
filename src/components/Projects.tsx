@@ -15,17 +15,17 @@ export default function Projects() {
       <div className="container relative px-4 md:px-6 z-10">
         <div className="flex flex-col items-center justify-center space-y-4 text-center">
           <div className="flex flex-col items-center justify-center h-full space-y-4 text-center mx-auto">
-            <BoxReveal boxColor={"#5046e6"} duration={0.3}>
+            
               <div className="inline-block rounded-lg bg-muted px-3 py-1 text-sm">Our Work</div>
-            </BoxReveal>
-            <BoxReveal boxColor={"#5046e6"} duration={0.3}>
+           
+            
               <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">Showcasing Our Expertise</h2>
-            </BoxReveal>
-            <BoxReveal boxColor={"#5046e6"} duration={0.3}>
+          
+            
               <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
                 Check out some of our recent projects and see how we've helped our clients succeed.
               </p>
-            </BoxReveal>
+           
           </div>
         </div>
         <div className="mx-auto grid max-w-5xl items-start gap-6 py-6 lg:grid-cols-2 lg:gap-12">

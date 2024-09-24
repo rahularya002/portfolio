@@ -30,8 +30,9 @@ export const GoogleGeminiEffect = ({
         works!`}
       </p>
       <div className="w-full h-[890px] -top-60 md:-top-40  flex items-center justify-center bg-red-transparent absolute ">
-        <button className="font-bold bg-white rounded-full md:px-4 md:py-2 px-3 py-2 md:mt-24 mt-8 z-30 md:text-base text-black text-sm w-36 mx-auto ">
-          Hire us
+        <button className="group relative font-bold bg-transparent border-2 border-white text-white rounded-full md:px-6 md:py-2 px-4 py-1.5 md:mt-12 mt-32 z-30 md:text-base text-sm w-48 md:w-64 mx-auto overflow-hidden transition-all duration-300 hover:text-black">
+          <span className="relative z-10">Hire us</span>
+          <span className="absolute inset-0 bg-white transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>
         </button>
       </div>
       <svg

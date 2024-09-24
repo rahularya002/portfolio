@@ -84,22 +84,21 @@ export default function TestimonialSection() {
     <section className="py-12 bg-gray-50 dark:bg-gray-900" id="#testimonials">
       <div className="container px-4 md:px-6">
         <div className="flex flex-col items-center justify-center h-full space-y-4 text-center mx-auto">
-          <BoxReveal boxColor={"#5046e6"} duration={0.3}>
+          
             <div className="inline-block rounded-lg bg-muted px-3 py-1 text-sm">
               Testimonials
             </div>
-          </BoxReveal>
-          <BoxReveal boxColor={"#5046e6"} duration={0.3}>
+        
+          
           <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">
             What People Says
           </h2>
-          </BoxReveal>
-          <BoxReveal boxColor={"#5046e6"} duration={0.3}>
+          
           <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed mx-auto">
             Check out some of our recent projects and see how we've helped our
             clients succeed.
           </p>
-          </BoxReveal>
+         
         </div>
 
         <Marquee pauseOnHover className="[--duration:20s] py-12">
