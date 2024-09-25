@@ -13,16 +13,31 @@ const contactSchema = new mongoose.Schema({
 const Contact = mongoose.models.Contact || mongoose.model('Contact', contactSchema);
 
 // Handle MongoDB connection
-if (!mongoose.connection.readyState) {
-  mongoose.connect(process.env.MONGO_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  });
+let cachedConnection = null;
+
+async function connectToDatabase() {
+  if (cachedConnection) {
+    return cachedConnection;
+  }
+
+  try {
+    const connection = await mongoose.connect(process.env.MONGO_URI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+    cachedConnection = connection;
+    console.log("Connected to MongoDB");
+    return connection;
+  } catch (error) {
+    console.error("Error connecting to MongoDB:", error);
+    throw error;
+  }
 }
-console.log("Connected to MongoDB");
 
 export async function POST(req) {
   try {
+    await connectToDatabase();
+
     const { name, email, message } = await req.json();
 
     if (!name || !email || !message) {
@@ -34,6 +49,12 @@ export async function POST(req) {
 
     return NextResponse.json({ message: "Contact saved successfully!" }, { status: 201 });
   } catch (error) {
+    console.error("Error in POST request:", error);
     return NextResponse.json({ message: "Error saving contact", error: error.message }, { status: 500 });
+  } finally {
+    // Close the connection after the operation is complete
+    if (mongoose.connection.readyState === 1) {
+      await mongoose.connection.close();
+    }
   }
 }
