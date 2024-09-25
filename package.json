@@ -6,8 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
-    "server": "node server/index.js"
+    "lint": "next lint"
   },
   "dependencies": {
     "@radix-ui/react-avatar": "^1.1.0",
@@ -31,6 +30,7 @@
     "gsap": "^3.12.5",
     "lenis": "^1.1.13",
     "lucide-react": "^0.436.0",
+    "mongoose": "^8.6.3",
     "next": "14.2.7",
     "next-themes": "^0.3.0",
     "nextjs-toploader": "^3.6.15",

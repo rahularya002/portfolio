@@ -13,12 +13,25 @@ export default function Contact() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(false); // Add loading state
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    // Basic client-side validation
+    if (!name || !email || !message) {
+      toast({
+        title: "Error",
+        description: "All fields are required.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setLoading(true); // Set loading state
+
     try {
-      const response = await fetch("http://localhost:5000/submit-form", {
+      const response = await fetch("/api/contact", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -48,6 +61,8 @@ export default function Contact() {
         description: "Something went wrong. Please try again.",
         variant: "destructive",
       });
+    } finally {
+      setLoading(false); // Reset loading state
     }
   };
 
@@ -82,19 +97,24 @@ export default function Contact() {
                   placeholder="Name"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
+                  disabled={loading} // Disable input when loading
                 />
                 <Input
                   type="email"
                   placeholder="Email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
+                  disabled={loading} // Disable input when loading
                 />
                 <Textarea
                   placeholder="Message"
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
+                  disabled={loading} // Disable textarea when loading
                 />
-                <Button type="submit">Submit</Button>
+                <Button type="submit" disabled={loading}>
+                  {loading ? "Submitting..." : "Submit"} {/* Show loading text */}
+                </Button>
               </form>
             </div>
           </div>
