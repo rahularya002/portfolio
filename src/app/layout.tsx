@@ -6,6 +6,7 @@ import './globals.css'
 import LenisScroll from './LenisScroll'
 import { Toaster } from "@/components/ui/toaster"
 import { Montserrat } from 'next/font/google'
+import TopLoader from "@/components/Toploader";
 
 const fontHeading = Inter({
   subsets: ['latin'],
@@ -34,6 +35,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           fontBody.variable
         )} 
       >
+        <TopLoader />
         <LenisScroll />
         <Toaster />
         {children}

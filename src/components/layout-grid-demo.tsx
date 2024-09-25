@@ -36,101 +36,36 @@ export function LayoutGridDemo() {
   );
 }
 
-const SkeletonOne = () => {
-  return (
-    <div className="h-full w-full flex flex-col justify-between p-4 relative z-10">
-      <SiReact className="text-4xl text-black relative" />
-      <div className="relative">
-        <p className="font-bold md:text-4xl text-xl text-black font-montserrat">
-          Web Development
-        </p>
-        <p className="font-normal text-base my-4 max-w-lg text-black">
-          We develop websites for your brand.
-        </p>
-      </div>
-    </div>
-  );
-};
-
-const SkeletonTwo = () => {
-  return (
-    <div className="h-full w-full flex flex-col justify-between p-4 relative z-10">
-      <CiMobile3 className="text-4xl text-black relative" />
-      <div className="relative">
-        <p className="font-bold md:text-4xl text-xl text-black font-montserrat">
-          Mobile App Development
-        </p>
-        <p className="font-normal text-base my-4 max-w-lg text-black">
-          We develop mobile apps for your brand.
-        </p>
-      </div>
-    </div>
-  );
-};
-
-const SkeletonThree = () => {
-  return (
-    <div className="h-full w-full flex flex-col justify-between p-4 relative z-10">
-      <GlobeIcon className="text-4xl text-black relative" />
-      <div className="relative">
-        <p className="font-bold md:text-4xl text-xl text-black font-montserrat">
-          SEO
-        </p>
-        <p className="font-normal text-base my-4 max-w-lg text-black">
-          We help you rank your website on search engines.
-        </p>
-      </div>
-    </div>
-  );
-};
-
-const SkeletonFour = () => {
-  return (
-    <div className="h-full w-full flex flex-col justify-between p-4 relative z-10">
-      <Clapperboard className="text-4xl text-black relative" />
-      <div className="relative">
-        <p className="font-bold md:text-4xl text-xl text-black font-montserrat">
-          Media Production
-        </p>
-        <p className="font-normal text-base my-4 max-w-lg text-black">
-          We help you produce short films and commercials with the help of AI.
-        </p>
-      </div>
-    </div>
-  );
-};
-
 const features = [
-    {
-      Icon: SiReact,
-      name: "Web Development",
-      description: "We develop websites for your brand.",
-      cta: "Learn more",
-      className: "lg:row-start-1 lg:row-end-4 lg:col-start-2 lg:col-end-3",
-    },
-    {
-      Icon: CiMobile3,
-      name: "Mobile App Development",
-      description: "We develop mobile apps for your brand.",
-      cta: "Learn more",
-      className: "lg:col-start-1 lg:col-end-2 lg:row-start-1 lg:row-end-3",
-    },
-    {
-      Icon: GlobeIcon,
-      name: "SEO",
-      description: "We help you rank your website on search engines.",
-      cta: "Learn more",
-      className: "lg:col-start-1 lg:col-end-2 lg:row-start-3 lg:row-end-4",
-      
-    },
-    {
-      Icon: TrendingUp,
-      name: "Digital Marketing",
-      description: "We help you market your website on search engines.",
-      cta: "Learn more",
-      className: "lg:col-start-3 lg:col-end-3 lg:row-start-1 lg:row-end-2",
-    },
-  ];
+  {
+    Icon: SiReact,
+    name: "Web Development",
+    description: "We develop websites for your brand.",
+    cta: "Learn more",
+    className: "lg:row-start-1 lg:row-end-4 lg:col-start-2 lg:col-end-3",
+  },
+  {
+    Icon: CiMobile3,
+    name: "Mobile App Development",
+    description: "We develop mobile apps for your brand.",
+    cta: "Learn more",
+    className: "lg:col-start-1 lg:col-end-2 lg:row-start-1 lg:row-end-3",
+  },
+  {
+    Icon: GlobeIcon,
+    name: "SEO",
+    description: "We help you rank your website on search engines.",
+    cta: "Learn more",
+    className: "lg:col-start-1 lg:col-end-2 lg:row-start-3 lg:row-end-4",
+  },
+  {
+    Icon: TrendingUp,
+    name: "Digital Marketing",
+    description: "We help you market your website on search engines.",
+    cta: "Learn more",
+    className: "lg:col-start-3 lg:col-end-3 lg:row-start-1 lg:row-end-2",
+  },
+];
 
 const MediaProductionCard = () => (
   <div className="flex flex-col justify-end h-full w-full relative z-10">
@@ -235,7 +170,7 @@ const cards = [
         </div>
       </div>
     ),
-    className: "md:col-span-2 rounded-xl min-h-[350px]",
+    className: "md:col-span-2 rounded-xl min-h-[270px]",
     thumbnail: "/path/to/video-editing-image.jpg",
     background: (
       <div className="absolute inset-0 z-0 bg-white">

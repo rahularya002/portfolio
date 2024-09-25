@@ -4,45 +4,69 @@ import BoxReveal from "./magicui/box-reveal";
 
 const reviews = [
   {
-    name: "Jack",
-    username: "@jack",
-    body: "I've never seen anything like this before. It's amazing. I love it.",
+    name: "Aarav",
+    username: "@aarav",
+    body: "This service is incredible. I've never experienced anything like it before.",
     img: "https://avatars.githubusercontent.com/u/16860528",
   },
   {
-    name: "Jill",
-    username: "@jill",
-    body: "I don't know what to say. I'm speechless. This is amazing.",
-    img:   "https://avatars.githubusercontent.com/u/20110627",
+    name: "Anaya",
+    username: "@anaya",
+    body: "I'm absolutely amazed. This is beyond my expectations.",
+    img: "https://avatars.githubusercontent.com/u/20110627",
   },
   {
-    name: "John",
-    username: "@john",
-    body: "I'm at a loss for words. This is amazing. I love it.",
+    name: "Vihaan",
+    username: "@vihaan",
+    body: "I am truly impressed. This is fantastic. I love it.",
     img: "https://avatars.githubusercontent.com/u/106103625",
   },
   {
-    name: "Jane",
-    username: "@jane",
-    body: "I'm at a loss for words. This is amazing. I love it.",
+    name: "Diya",
+    username: "@diya",
+    body: "This is phenomenal. I am at a loss for words.",
     img: "https://avatars.githubusercontent.com/u/59228569",
   },
   {
-    name: "Jenny",
-    username: "@jenny",
-    body: "I'm at a loss for words. This is amazing. I love it.",
+    name: "Ishaan",
+    username: "@ishaan",
+    body: "I can't believe how amazing this is. I'm speechless.",
     img: "https://avatars.githubusercontent.com/u/16860528",
   },
   {
-    name: "James",
-    username: "@james",
-    body: "I'm at a loss for words. This is amazing. I love it.",
+    name: "Mira",
+    username: "@mira",
+    body: "This is absolutely wonderful. I love it.",
     img: "https://avatars.githubusercontent.com/u/20110627",
+  },
+  {
+    name: "Rohan",
+    username: "@rohan",
+    body: "This service has exceeded all my expectations. Highly recommended!",
+    img: "https://avatars.githubusercontent.com/u/12345678",
+  },
+  {
+    name: "Aisha",
+    username: "@aisha",
+    body: "Absolutely fantastic! I am so impressed with the results.",
+    img: "https://avatars.githubusercontent.com/u/87654321",
+  },
+  {
+    name: "Kavya",
+    username: "@kavya",
+    body: "I am blown away by the quality of this service. It's top-notch.",
+    img: "https://avatars.githubusercontent.com/u/23456789",
+  },
+  {
+    name: "Arjun",
+    username: "@arjun",
+    body: "This is the best service I have ever used. Highly recommend it!",
+    img: "https://avatars.githubusercontent.com/u/98765432",
   },
 ];
 
-const firstRow = reviews.slice(0, reviews.length / 2);
-const secondRow = reviews.slice(reviews.length / 2);
+const firstRow = reviews.slice(0, Math.ceil(reviews.length / 2));
+const secondRow = reviews.slice(Math.ceil(reviews.length / 2));
 
 const ReviewCard = ({
   img,
@@ -85,11 +109,9 @@ export default function TestimonialSection() {
       <div className="container px-4 md:px-6">
         <div className="flex flex-col items-center justify-center h-full space-y-4 text-center mx-auto">
           
-            <div className="inline-block rounded-lg bg-muted px-3 py-1 text-sm">
-              Testimonials
-            </div>
-        
-          
+          <div className="inline-block rounded-lg bg-muted px-3 py-1 text-sm">
+            Testimonials
+          </div>
           <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">
             What People Says
           </h2>
