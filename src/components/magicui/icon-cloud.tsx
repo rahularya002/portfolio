@@ -66,9 +66,11 @@ type IconData = Awaited<ReturnType<typeof fetchSimpleIcons>>;
 export default function IconCloud({ iconSlugs }: DynamicCloudProps) {
   const [data, setData] = useState<IconData | null>(null);
   const { theme } = useTheme();
+  const [canvasId, setCanvasId] = useState<string>("");
 
   useEffect(() => {
     fetchSimpleIcons({ slugs: iconSlugs }).then(setData);
+    setCanvasId(`canvas-${Math.random().toString(36).substr(2, 9)}`);
   }, [iconSlugs]);
 
   const renderedIcons = useMemo(() => {
@@ -81,7 +83,7 @@ export default function IconCloud({ iconSlugs }: DynamicCloudProps) {
 
   return (
     // @ts-ignore
-    <Cloud {...cloudProps}>
+    <Cloud {...cloudProps} id={canvasId}>
       <>{renderedIcons}</>
     </Cloud>
   );
