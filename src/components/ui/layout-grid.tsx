@@ -11,7 +11,6 @@ type Card = {
   description?: string; // Optional
   content: JSX.Element | React.ReactNode | string;
   className: string;
-  thumbnail: string;
   background: React.ReactNode;
 };
 
@@ -88,7 +87,6 @@ const ImageComponent = ({ card }: { card: Card }) => {
     <>
       <motion.img
         layoutId={`image-${card.id}-image`}
-        src={card.thumbnail}
         height="500"
         width="500"
         className={cn(

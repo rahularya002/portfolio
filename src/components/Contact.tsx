@@ -69,7 +69,14 @@ export default function Contact() {
   return (
     <section
       id="#contact"
-      className="w-full py-12 md:py-24 lg:py-32 border-t relative flex items-center justify-center"
+      className="w-full py-12 md:py-24 lg:py-32 border-t relative flex items-center justify-center overflow-hidden"
+      style={{
+        backgroundImage: `url('/sapce.jpg')`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
+      }}
+
     >
       {/* Centered Orbiting Circles Demo */}
       <div className="absolute inset-0 flex items-center justify-center">
@@ -83,10 +90,10 @@ export default function Contact() {
               <div className="inline-block rounded-lg bg-muted px-3 py-1 text-sm">
                 Get in Touch
               </div>
-              <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">
+              <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl text-white">
                 Let's Discuss Your Project
               </h2>
-              <p className="max-w-[600px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
+              <p className="max-w-[600px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed text-white">
                 Fill out the form below and one of our team members will get back to you shortly.
               </p>
             </div>

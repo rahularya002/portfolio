@@ -1,15 +1,18 @@
 "use client";
 import React, { useState, useRef, useEffect } from "react";
 import { LayoutGrid } from "@/components/ui/layout-grid";
-import AnimatedBeamMultipleOutputDemo from "@/components/magicui/animated-beam-multiple-outputs";
-import AnimatedListDemo from "@/components/magicui/animted-list-demo";
+import dynamic from 'next/dynamic';
 import { GlobeIcon, Cross2Icon } from "@radix-ui/react-icons";
 import { CiMobile3 } from "react-icons/ci";
 import { SiReact } from "react-icons/si";
 import { TrendingUp, Clapperboard } from "lucide-react";
-import Ripple from "@/components/magicui/ripple";
-import RetroGrid from "./magicui/retro-grid";
 import { useInView } from "react-intersection-observer";
+
+const AnimatedBeamMultipleOutputDemo = dynamic(() => import("@/components/magicui/animated-beam-multiple-outputs"), { ssr: false });
+const AnimatedListDemo = dynamic(() => import("@/components/magicui/animted-list-demo"), { ssr: false });
+const Ripple = dynamic(() => import("@/components/magicui/ripple"), { ssr: false });
+const RetroGrid = dynamic(() => import("./magicui/retro-grid"), { ssr: false });
+const MediaProductionSlider = dynamic(() => import("./MediaProductionSlider"), { ssr: false });
 
 export function LayoutGridDemo() {
   const [expandedCard, setExpandedCard] = useState<number | null>(null);
@@ -67,20 +70,6 @@ const features = [
   },
 ];
 
-const MediaProductionCard = () => (
-  <div className="flex flex-col justify-end h-full w-full relative z-10">
-    <div className="flex items-start">
-      <div className="w-12 h-12 mr-4 flex-shrink-0">
-        <Clapperboard className="w-full h-full text-black" />
-      </div>
-      <div>
-        <p className="font-bold text-lg text-black font-montserrat">Media Production</p>
-        <p className="font-normal text-sm text-black">We help you produce short films and commercials with the help of AI.</p>
-      </div>
-    </div>
-  </div>
-);
-
 const cards = [
   {
     id: 1,
@@ -98,10 +87,9 @@ const cards = [
       </div>
     ),
     className: "md:col-span-2 rounded-xl pointer-events-none min-h-[350px]",
-    thumbnail: "/path/to/web-dev-image.jpg",
     background: (
       <div className="absolute inset-0 z-0 bg-white">
-        {AnimatedBeamMultipleOutputDemo && <AnimatedBeamMultipleOutputDemo className="h-full w-full border-none transition-all duration-300 ease-out [mask-image:linear-gradient(to_top,transparent_10%,#000_100%)]" />}
+        <AnimatedBeamMultipleOutputDemo className="h-full w-full border-none transition-all duration-300 ease-out [mask-image:linear-gradient(to_top,transparent_10%,#000_100%)]" />
       </div>
     ),
   },
@@ -121,10 +109,9 @@ const cards = [
       </div>
     ),
     className: "col-span-1 rounded-xl min-h-[350px]",
-    thumbnail: "/path/to/mobile-dev-image.jpg",
     background: (
       <div className="absolute inset-0 z-0 bg-white">
-        {AnimatedListDemo && <AnimatedListDemo className="h-full w-full border-none transition-all duration-300 ease-out [mask-image:linear-gradient(to_top,transparent_10%,#000_100%)] group-hover:scale-105" />}
+        <AnimatedListDemo className="h-full w-full border-none transition-all duration-300 ease-out [mask-image:linear-gradient(to_top,transparent_10%,#000_100%)] group-hover:scale-105" />
       </div>
     ),
   },
@@ -144,21 +131,17 @@ const cards = [
       </div>
     ),
     className: "col-span-1 rounded-xl min-h-[350px]",
-    thumbnail: "/path/to/seo-image.jpg",
     background: (
       <div className="absolute inset-0 z-0 flex items-center justify-center bg-white">
-        {Ripple && (
-          <Ripple className="absolute inset-0 h-full w-full border-none transition-all duration-300 ease-out [mask-image:linear-gradient(to_top,transparent_10%,#000_100%)] group-hover:scale-105" />
-        )}
+        <Ripple className="absolute inset-0 h-full w-full border-none transition-all duration-300 ease-out [mask-image:linear-gradient(to_top,transparent_10%,#000_100%)] group-hover:scale-105" />
       </div>
     ),
   },
   {
     id: 4,
-    name: "Media Production",
-    description: "We help you produce short films and commercials with the help of AI.",
     content: (
-      <div className="flex flex-col justify-end h-full w-full relative z-10">
+      <div className="flex flex-col justify-end h-full w-full p-4 relative z-10">
+        <MediaProductionSlider />
         <div className="flex items-start">
           <div className="w-12 h-12 mr-4 flex-shrink-0">
             <Clapperboard className="w-full h-full text-black" />
@@ -170,14 +153,11 @@ const cards = [
         </div>
       </div>
     ),
-    className: "md:col-span-2 rounded-xl min-h-[270px]",
-    thumbnail: "/path/to/video-editing-image.jpg",
+    className: "md:col-span-2 rounded-xl min-h-[350px]",
     background: (
       <div className="absolute inset-0 z-0 bg-white">
-        {RetroGrid && (
-          <RetroGrid className="absolute inset-0 h-full w-full border-none transition-all duration-300 ease-out [mask-image:linear-gradient(to_top,transparent_10%,#000_100%)] group-hover:scale-105" />
-        )}
+        <RetroGrid className="absolute inset-0 h-full w-full border-none transition-all duration-300 ease-out [mask-image:linear-gradient(to_top,transparent_10%,#000_100%)] group-hover:scale-105" />
       </div>
-    )
+    ),
   },
 ];
