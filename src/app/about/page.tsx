@@ -5,12 +5,14 @@ import { Achievements } from '@/components/component/achievements';
 import Footer from '@/components/Footer';
 import Contact from '@/components/Contact';
 import HomeButton from '@/components/HomeButton';
+import Hero from '@/components/Hero';
 
 const AboutUs = () => {
   return (
     <div className="w-full px-0 relative">
       <HomeButton />
-      <GoogleGeminiEffectDemo />
+      <Hero />
+      {/* <GoogleGeminiEffectDemo /> */}
       <TimelineDemo />
       <Achievements />
       <Contact />

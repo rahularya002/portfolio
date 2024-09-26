@@ -8,6 +8,7 @@ import Contact from '@/components/Contact'
 import Footer from '@/components/Footer'
 import TestimonialSection from '@/components/Testimonial'
 import { Element } from "react-scroll";
+import { GoogleGeminiEffectDemo } from '@/components/google-gemeni-effect';
 // import TestimonialSection from '@/components/Testimonial'
 
 
@@ -19,7 +20,7 @@ export default function Home() {
       <main className="flex-grow">
         <Element name="home">
           <section id="home">
-            <Hero />
+            <GoogleGeminiEffectDemo />
           </section>
         </Element>
         <Element name="services">

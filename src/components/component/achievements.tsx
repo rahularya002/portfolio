@@ -22,9 +22,9 @@ export function Achievements(): JSX.Element {
     if (inView) {
       interval = setInterval(() => {
         setCounts(prevCounts => ({
-          users: Math.min(prevCounts.users + 10000, 1200000),
+          users: Math.min(prevCounts.users + 10000, 100000),
           uptime: Math.min(prevCounts.uptime + 1, 99.9),
-          customers: Math.min(prevCounts.customers + 5, 500),
+          customers: Math.min(prevCounts.customers + 5, 250),
           satisfaction: Math.min(prevCounts.satisfaction + 0.1, 4.9)
         }));
       }, 50);
