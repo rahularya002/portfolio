@@ -62,7 +62,7 @@ export const LayoutGrid = ({ cards }: { cards: Card[] }) => {
                   transition={{ duration: 0.3 }}
                   className="mb-4 flex-grow"
                 >
-                  <MediaProductionSlider />
+                  <MediaProductionSlider isExpanded={isMediaProductionExpanded} />
                 </motion.div>
               ) : null}
               {card.content}
