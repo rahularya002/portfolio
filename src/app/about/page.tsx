@@ -1,12 +1,12 @@
+"use client";
 import React from 'react';
-import { GoogleGeminiEffectDemo } from '@/components/google-gemeni-effect';
 import { TimelineDemo } from '@/components/ui/Timelinedemo';
 import { Achievements } from '@/components/component/achievements';
 import Footer from '@/components/Footer';
 import Contact from '@/components/Contact';
 import HomeButton from '@/components/HomeButton';
 import Hero from '@/components/Hero';
-
+import { Element } from "react-scroll";
 const AboutUs = () => {
   return (
     <div className="w-full px-0 relative">
@@ -15,7 +15,11 @@ const AboutUs = () => {
       {/* <GoogleGeminiEffectDemo /> */}
       <TimelineDemo />
       <Achievements />
-      <Contact />
+      <Element name="contact">
+        <section id="contact">
+          <Contact />
+        </section>
+      </Element>
       <Footer />
     </div>
   );

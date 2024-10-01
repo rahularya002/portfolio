@@ -30,7 +30,99 @@ export function LayoutGridDemo() {
     setExpandedCard(id === expandedCard ? null : id);
   };
 
-  return (      
+  const cards = [
+    {
+      id: 1,
+      content: (
+        <div className="flex flex-col justify-end h-full w-full p-4 relative z-10">
+          <div className="flex items-start">
+            <div className="w-12 h-12 mr-4 flex-shrink-0">
+              <SiReact className="w-full h-full text-black" />
+            </div>
+            <div>
+              <p className="font-bold text-lg text-black font-montserrat">Web Development</p>
+              <p className="font-normal text-sm text-black">We develop websites for your brand.</p>
+            </div>
+          </div>
+        </div>
+      ),
+      className: "md:col-span-2 rounded-xl pointer-events-none min-h-[350px]",
+      background: (
+        <div className="absolute inset-0 z-0 bg-white">
+          <AnimatedBeamMultipleOutputDemo className="h-full w-full border-none transition-all duration-300 ease-out [mask-image:linear-gradient(to_top,transparent_10%,#000_100%)]" />
+        </div>
+      ),
+    },
+    {
+      id: 2,
+      content: (
+        <div className="flex flex-col justify-end h-full w-full p-4 relative z-10">
+          <div className="flex items-start">
+            <div className="w-12 h-12 mr-4 flex-shrink-0">
+              <CiMobile3 className="w-full h-full text-black" />
+            </div>
+            <div>
+              <p className="font-bold text-lg text-black font-montserrat">Mobile App Development</p>
+              <p className="font-normal text-sm text-black">We develop mobile apps for your brand.</p>
+            </div>
+          </div>
+        </div>
+      ),
+      className: "col-span-1 rounded-xl min-h-[350px]",
+      background: (
+        <div className="absolute inset-0 z-0 bg-white">
+          <AnimatedListDemo className="h-full w-full border-none transition-all duration-300 ease-out [mask-image:linear-gradient(to_top,transparent_10%,#000_100%)] group-hover:scale-105" />
+        </div>
+      ),
+    },
+    {
+      id: 3,
+      content: (
+        <div className="flex flex-col justify-end h-full w-full p-4 relative z-10">
+          <div className="flex items-start">
+            <div className="w-12 h-12 mr-4 flex-shrink-0">
+              <GlobeIcon className="w-full h-full text-black" />
+            </div>
+            <div>
+              <p className="font-bold text-lg text-black font-montserrat">Digital Marketing</p>
+              <p className="font-normal text-sm text-black">We help you market your website on search engines.</p>
+            </div>
+          </div>
+        </div>
+      ),
+      className: "col-span-1 rounded-xl min-h-[350px]",
+      background: (
+        <div className="absolute inset-0 z-0 flex items-center justify-center bg-white">
+          <Ripple className="absolute inset-0 h-full w-full border-none transition-all duration-300 ease-out [mask-image:linear-gradient(to_top,transparent_10%,#000_100%)] group-hover:scale-105" />
+        </div>
+      ),
+    },
+    {
+      id: 4,
+      content: (
+        <div className="flex flex-col justify-end h-full w-full p-4 relative z-10" onClick={() => handleCardClick(4)}>
+          <MediaProductionSlider isExpanded={expandedCard === 4} />
+          <div className="flex items-start mt-4">
+            <div className="w-12 h-12 mr-4 flex-shrink-0">
+              <Clapperboard className="w-full h-full text-black" />
+            </div>
+            <div>
+              <p className="font-bold text-lg text-black font-montserrat">Media Production</p>
+              <p className="font-normal text-sm text-black">We help you produce short films and commercials with the help of AI.</p>
+            </div>
+          </div>
+        </div>
+      ),
+      className: "md:col-span-2 rounded-xl min-h-[350px]",
+      background: (
+        <div className="absolute inset-0 z-0 bg-white">
+          <RetroGrid className="absolute inset-0 h-full w-full border-none transition-all duration-300 ease-out [mask-image:linear-gradient(to_top,transparent_10%,#000_100%)] group-hover:scale-105" />
+        </div>
+      ),
+    },
+  ];
+
+  return (
     <React.Fragment>
       <div ref={ref} className="h-full w-full">
         <LayoutGrid cards={cards} />
@@ -67,97 +159,5 @@ const features = [
     description: "We help you market your website on search engines.",
     cta: "Learn more",
     className: "lg:col-start-3 lg:col-end-3 lg:row-start-1 lg:row-end-2",
-  },
-];
-
-const cards = [
-  {
-    id: 1,
-    content: (
-      <div className="flex flex-col justify-end h-full w-full p-4 relative z-10">
-        <div className="flex items-start">
-          <div className="w-12 h-12 mr-4 flex-shrink-0">
-            <SiReact className="w-full h-full text-black" />
-          </div>
-          <div>
-            <p className="font-bold text-lg text-black font-montserrat">Web Development</p>
-            <p className="font-normal text-sm text-black">We develop websites for your brand.</p>
-          </div>
-        </div>
-      </div>
-    ),
-    className: "md:col-span-2 rounded-xl pointer-events-none min-h-[350px]",
-    background: (
-      <div className="absolute inset-0 z-0 bg-white">
-        <AnimatedBeamMultipleOutputDemo className="h-full w-full border-none transition-all duration-300 ease-out [mask-image:linear-gradient(to_top,transparent_10%,#000_100%)]" />
-      </div>
-    ),
-  },
-  {
-    id: 2,
-    content: (
-      <div className="flex flex-col justify-end h-full w-full p-4 relative z-10">
-        <div className="flex items-start">
-          <div className="w-12 h-12 mr-4 flex-shrink-0">
-            <CiMobile3 className="w-full h-full text-black" />
-          </div>
-          <div>
-            <p className="font-bold text-lg text-black font-montserrat">Mobile App Development</p>
-            <p className="font-normal text-sm text-black">We develop mobile apps for your brand.</p>
-          </div>
-        </div>
-      </div>
-    ),
-    className: "col-span-1 rounded-xl min-h-[350px]",
-    background: (
-      <div className="absolute inset-0 z-0 bg-white">
-        <AnimatedListDemo className="h-full w-full border-none transition-all duration-300 ease-out [mask-image:linear-gradient(to_top,transparent_10%,#000_100%)] group-hover:scale-105" />
-      </div>
-    ),
-  },
-  {
-    id: 3,
-    content: (
-      <div className="flex flex-col justify-end h-full w-full p-4 relative z-10">
-        <div className="flex items-start">
-          <div className="w-12 h-12 mr-4 flex-shrink-0">
-            <GlobeIcon className="w-full h-full text-black" />
-          </div>
-          <div>
-            <p className="font-bold text-lg text-black font-montserrat">Digital Marketing</p>
-            <p className="font-normal text-sm text-black">We help you market your website on search engines.</p>
-          </div>
-        </div>
-      </div>
-    ),
-    className: "col-span-1 rounded-xl min-h-[350px]",
-    background: (
-      <div className="absolute inset-0 z-0 flex items-center justify-center bg-white">
-        <Ripple className="absolute inset-0 h-full w-full border-none transition-all duration-300 ease-out [mask-image:linear-gradient(to_top,transparent_10%,#000_100%)] group-hover:scale-105" />
-      </div>
-    ),
-  },
-  {
-    id: 4,
-    content: (
-      <div className="flex flex-col justify-end h-full w-full p-4 relative z-10">
-        <MediaProductionSlider />
-        <div className="flex items-start">
-          <div className="w-12 h-12 mr-4 flex-shrink-0">
-            <Clapperboard className="w-full h-full text-black" />
-          </div>
-          <div>
-            <p className="font-bold text-lg text-black font-montserrat">Media Production</p>
-            <p className="font-normal text-sm text-black">We help you produce short films and commercials with the help of AI.</p>
-          </div>
-        </div>
-      </div>
-    ),
-    className: "md:col-span-2 rounded-xl min-h-[350px]",
-    background: (
-      <div className="absolute inset-0 z-0 bg-white">
-        <RetroGrid className="absolute inset-0 h-full w-full border-none transition-all duration-300 ease-out [mask-image:linear-gradient(to_top,transparent_10%,#000_100%)] group-hover:scale-105" />
-      </div>
-    ),
   },
 ];
