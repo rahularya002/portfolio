@@ -4,6 +4,7 @@ import { DockDemo } from '@/components/Dock'
 import Hero from '@/components/Hero'
 import Services from '@/components/Services'
 import Projects from '@/components/Projects'
+import StickyScrollRevealDemo from '@/components/component/knowmore'
 import Contact from '@/components/Contact'
 import Footer from '@/components/Footer'
 import TestimonialSection from '@/components/Testimonial'
@@ -26,6 +27,11 @@ export default function Home() {
         <Element name="services">
           <section id="services">
             <Services />
+          </section>
+        </Element>
+        <Element name="knowmore">
+          <section id="knowmore">
+            <StickyScrollRevealDemo />
           </section>
         </Element>
         <Element name="projects">
