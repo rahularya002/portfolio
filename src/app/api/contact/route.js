@@ -39,17 +39,17 @@ export async function POST(req) {
     const { db } = await connectToDatabase();
 
     // Parsing the request body
-    const { name, email, message } = await req.json();
-    console.log('Received request data:', { name, email, message });
+    const { name, email, phone, message } = await req.json();
+    console.log('Received request data:', { name, email, phone, message });
 
     // Validate the incoming request body
-    if (!name || !email || !message) {
+    if (!name || !email || !phone || !message) {
       console.error('Request validation failed: missing fields');
       return NextResponse.json({ message: 'All fields are required' }, { status: 400 });
     }
 
     // Generate a unique key for the cache
-    const cacheKey = `${name}-${email}-${message}`;
+    const cacheKey = `${name}-${email}-${phone}-${message}`;
 
     // Check if the result is already cached
     const cachedResult = cache.get(cacheKey);
@@ -63,7 +63,7 @@ export async function POST(req) {
 
     // Try to insert the contact into the database with a timeout
     const result = await Promise.race([
-      collection.insertOne({ name, email, message, createdAt: new Date() }),
+      collection.insertOne({ name, email, phone, message, createdAt: new Date() }),
       new Promise((_, reject) => setTimeout(() => reject(new Error('Operation timed out')), 9000))
     ]);
 
@@ -103,4 +103,3 @@ export async function GET(req) {
     return NextResponse.json({ message: "Internal Server Error", error: error.message }, { status: 500 });
   }
 }
-

@@ -1,7 +1,5 @@
 "use client"
-import Navbar from '@/components/Navbar'  // Updated import path
 import { DockDemo } from '@/components/Dock'
-import Hero from '@/components/Hero'
 import Services from '@/components/Services'
 import Projects from '@/components/Projects'
 import StickyScrollRevealDemo from '@/components/component/knowmore'
@@ -10,11 +8,13 @@ import Footer from '@/components/Footer'
 import TestimonialSection from '@/components/Testimonial'
 import { Element } from "react-scroll";
 import { GoogleGeminiEffectDemo } from '@/components/google-gemeni-effect';
+import WorkshopLogin from '@/components/ui/workshop'
 // import TestimonialSection from '@/components/Testimonial'
 
 
 export default function Home() {
   return (
+    
     <div className="flex flex-col min-h-screen">
       {/* <Navbar /> */}
       
@@ -39,6 +39,7 @@ export default function Home() {
             <Projects />
           </section>
         </Element>
+        <WorkshopLogin />
         <Element name="testimonials">
           <section id="testimonials">
             <TestimonialSection />

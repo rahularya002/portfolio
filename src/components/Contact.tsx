@@ -12,6 +12,7 @@ export default function Contact() {
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState(""); // Add phone state
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false); // Add loading state
 
@@ -19,7 +20,7 @@ export default function Contact() {
     e.preventDefault();
 
     // Basic client-side validation
-    if (!name || !email || !message) {
+    if (!name || !email || !phone || !message) { // Include phone in validation
       toast({
         title: "Error",
         description: "All fields are required.",
@@ -36,7 +37,7 @@ export default function Contact() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ name, email, message }),
+        body: JSON.stringify({ name, email, phone, message }), // Include phone in the request body
       });
 
       if (response.ok) {
@@ -47,6 +48,7 @@ export default function Contact() {
         });
         setName("");
         setEmail("");
+        setPhone(""); // Reset phone
         setMessage("");
       } else {
         toast({
@@ -111,6 +113,13 @@ export default function Contact() {
                   placeholder="Email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
+                  disabled={loading} // Disable input when loading
+                />
+                <Input
+                  type="tel"
+                  placeholder="Phone"
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
                   disabled={loading} // Disable input when loading
                 />
                 <Textarea

@@ -1,3 +1,5 @@
+// This component can be called an "Interactive Sticky Scroll Reveal" or "Animated Content Reveal"
+
 import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";

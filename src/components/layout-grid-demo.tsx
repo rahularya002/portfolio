@@ -2,7 +2,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { LayoutGrid } from "@/components/ui/layout-grid";
 import dynamic from 'next/dynamic';
-import { GlobeIcon, Cross2Icon } from "@radix-ui/react-icons";
+import { GlobeIcon } from "@radix-ui/react-icons";
 import { CiMobile3 } from "react-icons/ci";
 import { SiReact } from "react-icons/si";
 import { TrendingUp, Clapperboard } from "lucide-react";
