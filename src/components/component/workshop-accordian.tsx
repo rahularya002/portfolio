@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import Image from "next/image";
+import Image from "next/legacy/image";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 
 function WorkshopAccordion() {
@@ -81,7 +81,7 @@ function WorkshopAccordion() {
             </div>
           </div>
           <div className="w-full md:w-1/2 flex flex-col max-h-[600px]">
-            <h2 className="text-black dark:text-white text-4xl md:text-5xl font-bold mb-8 text-center md:text-right">
+            <h2 className="text-black dark:text-white text-4xl md:text-5xl font-bold mb-8 text-center ">
               What Will You Learn
             </h2>
             <div className="overflow-y-auto pr-4 scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-transparent">

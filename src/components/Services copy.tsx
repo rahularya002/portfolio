@@ -1,5 +1,5 @@
 import Link from "next/link";
-import Image from "next/image";
+import Image from "next/legacy/image";
 import AnimatedShinyText from "./magicui/animated-shiny-text";
 import { CodeIcon, SmartphoneIcon, TypeIcon, FilmIcon, StoreIcon } from "./Icons";
 import ShinyButton from "./magicui/shiny-button";

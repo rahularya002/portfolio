@@ -1,6 +1,7 @@
 "use client"
 import { motion } from 'framer-motion';
 import { HoverEffect } from "@/components/ui/card-hover-effect";
+import Link from 'next/link';
 
 const workshopCards = [
   { title: "Web Development", image: "/wd.jpg", description: "Master modern web technologies and frameworks." },
@@ -13,7 +14,7 @@ const workshopCards = [
 
 function WorkshopCards() {
   return (
-    <div className="w-3/5 mx-auto py-16">
+    <div className="lg:w-3/5 md:w-auto mx-auto py-16">
       <motion.h2 
         className="text-black dark:text-white text-4xl md:text-5xl font-bold mb-4 text-center"
         initial={{ opacity: 0, y: -50 }}
@@ -33,9 +34,15 @@ function WorkshopCards() {
       <HoverEffect items={workshopCards.map((card) => ({
         title: card.title,
         description: card.description,
-        link: "#",
         image: card.image,
       }))} />
+
+      <div className='flex items-center justify-center'>
+        <Link href='https://enbquantum.co.in/'>
+          <button className='border rounded-md border-black bg-white px-12 py-3 uppercase'>Explore</button>
+        </Link>
+      </div>
+      
     </div>
   );
 }

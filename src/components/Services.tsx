@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useInView } from "react-intersection-observer";
 import Link from "next/link";
-import Image from "next/image";
+import Image from "next/legacy/image";
 import AnimatedShinyText from "./magicui/animated-shiny-text";
 import ShinyButton from "./magicui/shiny-button";
 import BoxReveal from "./magicui/box-reveal";

@@ -21,6 +21,7 @@ export default function SignupFormDemo() {
     password: "",
   });
 
+  const [registrationSuccess, setRegistrationSuccess] = useState(false); // Track registration status
   const { toast } = useToast(); // Use toast from the useToast hook
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -57,6 +58,7 @@ export default function SignupFormDemo() {
           variant: "default",
         });
         setFormData({ firstname: "", lastname: "", email: "", password: "" });
+        setRegistrationSuccess(true); // Set registration success to true
       } else {
         toast({
           title: "Error",
@@ -71,6 +73,10 @@ export default function SignupFormDemo() {
         variant: "destructive",
       });
     }
+  };
+
+  const handlePayment = () => {
+    window.location.href = "https://rzp.io/rzp/O3S43wNr"; // Redirect to Razorpay payment link
   };
 
   return (
@@ -132,14 +138,22 @@ export default function SignupFormDemo() {
         >
           Sign up &rarr;
         </button>
-
-        <Link href='/workshop'>
-          <button className="w-full bg-gradient-to-br from-black to-neutral-600 dark:from-zinc-900 dark:to-zinc-900 text-white rounded-md h-10 font-medium my-4">
-            Back to Home
-          </button>
-        </Link>
-        
       </form>
+
+      {registrationSuccess && (
+        <button
+          onClick={handlePayment}
+          className="bg-gradient-to-br from-green-500 to-green-700 text-white w-full rounded-md h-10 font-medium mt-4"
+        >
+          Proceed to Payment
+        </button>
+      )}
+
+      <Link href="/workshop">
+        <button className="w-full bg-gradient-to-br from-black to-neutral-600 dark:from-zinc-900 dark:to-zinc-900 text-white rounded-md h-10 font-medium my-4">
+          Back to Home
+        </button>
+      </Link>
     </div>
   );
 }

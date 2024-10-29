@@ -1,6 +1,6 @@
 "use client"
 import { useState, useEffect } from 'react'
-import Image from 'next/image'
+import Image from "next/legacy/image"
 import AnimatedGridPattern from '@/components/ui/animated-grid-pattern'
 import Link from 'next/link'
 import { cn } from '@/lib/utils'
@@ -39,10 +39,10 @@ function WorkshopHero() {
               )}
             />
       <div className="w-full max-w-6xl px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-2 gap-10 items-center relative z-10">
-        <div className="space-y-8">
+        <div className=" my-6">
           <h1 className="text-black dark:text-white text-4xl font-bold leading-tight">Unleash the Power of AI with MD Infosystems & ENew Bharat</h1>
-          <p className="text-gray-700 dark:text-gray-300 text-lg leading-relaxed mb-4">
-          MD Infosystems Pvt. Ltd. is proud to collaborate with ENew Bharat Pvt. Ltd. to present an exclusive online workshop designed to give you practical insights into the world of AI. From music creation to AI-generated movies, our workshop will show you how to harness the power of AI tools to revolutionize industries and streamline everyday 
+          <p className="text-gray-700 dark:text-gray-300 text-lg leading-relaxed my-4">
+          MD Infosystems Pvt. Ltd. is proud to collaborate with ENew Bharat Pvt. Ltd. to present an exclusive online workshop designed to give you practical insights into the world of AI. 
           </p>
           <Link href='/workshop/Signup' >
             <button className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 px-10 rounded-full transition duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1">
@@ -56,8 +56,7 @@ function WorkshopHero() {
               key={src}
               src={src}
               alt={`Workshop image ${index + 1}`}
-              fill
-              style={{ objectFit: "cover" }}
+              layout='fill'
               className={`rounded-lg transition-opacity duration-1000 ${
                 index === currentImage ? 'opacity-100' : 'opacity-0'
               }`}

@@ -1,6 +1,6 @@
 "use client";
 import { cn } from "@/lib/utils";
-import Image from "next/image";
+import Image from "next/legacy/image";
 
 export default function CardDemo() {
   return (

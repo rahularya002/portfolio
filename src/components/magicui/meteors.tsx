@@ -22,23 +22,21 @@ export const Meteors = ({ number = 30 }: MeteorsProps) => {
     setMeteorStyles(styles);
   }, [number]);
 
-  return (
-    <>
-      {[...meteorStyles].map((style, idx) => (
-        // Meteor Head
-        <span
-          key={idx}
-          className={cn(
-            "pointer-events-none absolute left-1/2 top-1/2 size-0.7 rotate-[215deg] animate-meteor rounded-full bg-slate-500 shadow-[0_0_0_1px_#ffffff10]",
-          )}
-          style={style}
-        >
-          {/* Meteor Tail */}
-          <div className="pointer-events-none absolute top-1/2 -z-10 h-px w-[50px] -translate-y-1/2 bg-gradient-to-r from-slate-500 to-transparent" />
-        </span>
-      ))}
-    </>
-  );
+  return (<>
+    {[...meteorStyles].map((style, idx) => (
+      // Meteor Head
+      (<span
+        key={idx}
+        className={cn(
+          "pointer-events-none absolute left-1/2 top-1/2 size-0.7 rotate-[215deg] animate-meteor rounded-full bg-slate-500 shadow-[0_0_0_1px_#ffffff10]",
+        )}
+        style={style}
+      >
+        {/* Meteor Tail */}
+        <div className="pointer-events-none absolute top-1/2 -z-10 h-px w-[50px] -translate-y-1/2 bg-gradient-to-r from-slate-500 to-transparent" />
+      </span>)
+    ))}
+  </>);
 };
 
 export default Meteors;

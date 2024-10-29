@@ -2,7 +2,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { cn } from "@/lib/utils";
-import Image from "next/image";
+import Image from "next/legacy/image";
 import MediaProductionSlider from "../MediaProductionSlider";
 
 type Card = {
