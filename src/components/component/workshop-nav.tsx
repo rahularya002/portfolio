@@ -14,7 +14,7 @@ const WorkshopNav = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-2 items-center h-20">
           <div className="col-span-1 text-white font-bold text-lg md:text-xl animate-pulse">
-            🔥 Flash Sale: 50% OFF All Workshops!
+            🔥 AI Workshop | Register Now 🔥
           </div>
           <div className="col-span-1 flex justify-end items-center space-x-4">
             <Link href='/workshop/Signup'>

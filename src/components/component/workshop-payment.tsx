@@ -45,7 +45,7 @@ const WorkshopPricing = () => {
         >
           <div className="px-6 py-8">
             <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">Workshop Package</h3>
-            <p className="text-4xl font-bold text-blue-600 dark:text-blue-400 mb-6">$299</p>
+            <p className="text-4xl font-bold text-blue-600 dark:text-blue-400 mb-6">₹199</p>
             <ul className="space-y-3 mb-6">
               {workshopFeatures.map((feature, index) => (
                 <li key={index} className="flex items-center text-gray-700 dark:text-gray-300">

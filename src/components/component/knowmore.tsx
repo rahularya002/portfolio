@@ -3,6 +3,7 @@
 import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import ShinyButton from "../magicui/shiny-button";
 
 const knowMoreContent = [
   {
@@ -83,9 +84,11 @@ export default function KnowMoreSection() {
         </div>
         <div className="flex justify-center mt-8">
           <a href="http://mdinfosystems.in/" target="_blank" rel="noopener noreferrer">
-            <button className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-full">
-              Know More
-            </button>
+              <ShinyButton text="Learn More" className="bg-transparent border border-primary text-primary">
+                <span className="inline-flex h-8 items-center justify-center rounded-md px-4 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50">
+                  Know More
+                </span>
+              </ShinyButton>
           </a>
         </div>
       </div>

@@ -23,6 +23,7 @@ const ContactsPage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [stats, setStats] = useState<ContactStats>({ total: 0, today: 0, thisWeek: 0 });
+  const [filter, setFilter] = useState<"all" | "today" | "week" | "older">("all");
 
   useEffect(() => {
     const fetchContacts = async () => {
@@ -31,7 +32,7 @@ const ContactsPage = () => {
         const contactsData = response.data;
         setContacts(contactsData);
         
-        // Calculate stats
+        // Calculate stats and categorize contacts
         const today = new Date();
         const todayContacts = contactsData.filter(contact => {
           const contactDate = new Date(contact.createdAt);
@@ -42,7 +43,7 @@ const ContactsPage = () => {
           const contactDate = new Date(contact.createdAt);
           const diffTime = Math.abs(today.getTime() - contactDate.getTime());
           const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-          return diffDays <= 7;
+          return diffDays <= 7 && contactDate.toDateString() !== today.toDateString();
         });
 
         setStats({
@@ -64,6 +65,37 @@ const ContactsPage = () => {
     fetchContacts();
   }, []);
 
+  const filterContacts = () => {
+    const today = new Date();
+
+    if (filter === "today") {
+      return contacts.filter(contact => {
+        const contactDate = new Date(contact.createdAt);
+        return contactDate.toDateString() === today.toDateString();
+      });
+    }
+
+    if (filter === "week") {
+      return contacts.filter(contact => {
+        const contactDate = new Date(contact.createdAt);
+        const diffTime = Math.abs(today.getTime() - contactDate.getTime());
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+        return diffDays <= 7 && contactDate.toDateString() !== today.toDateString();
+      });
+    }
+
+    if (filter === "older") {
+      return contacts.filter(contact => {
+        const contactDate = new Date(contact.createdAt);
+        const diffTime = Math.abs(today.getTime() - contactDate.getTime());
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+        return diffDays > 7;
+      });
+    }
+
+    return contacts;
+  };
+
   if (loading) {
     return (
       <div className="flex justify-center items-center h-screen">
@@ -82,12 +114,12 @@ const ContactsPage = () => {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="container mx-auto px-4 py-8 ">
       <h1 className="text-3xl font-bold mb-6 text-center">Contact List</h1>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-        <Card>
-          <CardContent className="pt-6">
+        <Card onClick={() => setFilter("all")} className={filter === "all" ? "border-blue-500" : ""}>
+          <CardContent className="pt-6 cursor-pointer">
             <div className="flex items-center space-x-4">
               <div className="p-2 bg-blue-100 rounded-lg">
                 <Users className="h-6 w-6 text-blue-600" />
@@ -100,8 +132,8 @@ const ContactsPage = () => {
           </CardContent>
         </Card>
 
-        <Card>
-          <CardContent className="pt-6">
+        <Card onClick={() => setFilter("today")} className={filter === "today" ? "border-green-500" : ""}>
+          <CardContent className="pt-6 cursor-pointer">
             <div className="flex items-center space-x-4">
               <div className="p-2 bg-green-100 rounded-lg">
                 <Users className="h-6 w-6 text-green-600" />
@@ -114,8 +146,8 @@ const ContactsPage = () => {
           </CardContent>
         </Card>
 
-        <Card>
-          <CardContent className="pt-6">
+        <Card onClick={() => setFilter("week")} className={filter === "week" ? "border-purple-500" : ""}>
+          <CardContent className="pt-6 cursor-pointer">
             <div className="flex items-center space-x-4">
               <div className="p-2 bg-purple-100 rounded-lg">
                 <Users className="h-6 w-6 text-purple-600" />
@@ -127,13 +159,27 @@ const ContactsPage = () => {
             </div>
           </CardContent>
         </Card>
+
+        <Card onClick={() => setFilter("older")} className={filter === "older" ? "border-gray-500" : ""}>
+          <CardContent className="pt-6 cursor-pointer">
+            <div className="flex items-center space-x-4">
+              <div className="p-2 bg-gray-100 rounded-lg">
+                <Users className="h-6 w-6 text-gray-600" />
+              </div>
+              <div>
+                <p className="text-sm font-medium text-gray-500">Older Contacts</p>
+                <h3 className="text-2xl font-bold">{stats.total - stats.today - stats.thisWeek}</h3>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
       </div>
 
       {contacts.length === 0 ? (
         <p className="text-center text-gray-500">No contacts found</p>
       ) : (
         <ul className="space-y-6">
-          {contacts.map((contact) => (
+          {filterContacts().map((contact) => (
             <li key={contact._id} className="bg-white shadow-md rounded-lg p-6">
               <div className="grid grid-cols-2 gap-4">
                 <div>

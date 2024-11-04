@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import React, { useEffect, useState } from 'react';
 import { Card, CardContent } from "@/components/ui/card";
 import { Users, UserCheck, Calendar, Loader2 } from "lucide-react";
@@ -31,6 +31,7 @@ const WorkshopRegistrationsPage = () => {
     thisWeek: 0,
     paid: 0 
   });
+  const [activeFilter, setActiveFilter] = useState<'all' | 'today' | 'thisWeek' | 'paid'>('all');
   const { toast } = useToast();
 
   useEffect(() => {
@@ -42,7 +43,7 @@ const WorkshopRegistrationsPage = () => {
         if (!response.ok) throw new Error(data.message);
         
         setRegistrations(data);
-        
+
         // Calculate stats
         const today = new Date();
         const todayRegistrations = data.filter((reg: Registration) => {
@@ -82,6 +83,24 @@ const WorkshopRegistrationsPage = () => {
     fetchRegistrations();
   }, [toast]);
 
+  // Filter registrations based on the selected filter
+  const filteredRegistrations = registrations.filter((reg) => {
+    if (activeFilter === 'today') {
+      const regDate = new Date(reg.createdAt);
+      return regDate.toDateString() === new Date().toDateString();
+    }
+    if (activeFilter === 'thisWeek') {
+      const regDate = new Date(reg.createdAt);
+      const diffTime = Math.abs(new Date().getTime() - regDate.getTime());
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+      return diffDays <= 7;
+    }
+    if (activeFilter === 'paid') {
+      return reg.paymentStatus === 'completed';
+    }
+    return true;
+  });
+
   if (loading) {
     return (
       <div className="flex justify-center items-center h-screen">
@@ -109,7 +128,7 @@ const WorkshopRegistrationsPage = () => {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
-        <Card className="bg-white dark:bg-black border dark:border-zinc-800">
+        <Card onClick={() => setActiveFilter('all')} className="cursor-pointer bg-white dark:bg-black border dark:border-zinc-800">
           <CardContent className="pt-6">
             <div className="flex items-center space-x-4">
               <div className="p-2 bg-blue-100 dark:bg-blue-900 rounded-lg">
@@ -123,7 +142,7 @@ const WorkshopRegistrationsPage = () => {
           </CardContent>
         </Card>
 
-        <Card className="bg-white dark:bg-black border dark:border-zinc-800">
+        <Card onClick={() => setActiveFilter('paid')} className="cursor-pointer bg-white dark:bg-black border dark:border-zinc-800">
           <CardContent className="pt-6">
             <div className="flex items-center space-x-4">
               <div className="p-2 bg-green-100 dark:bg-green-900 rounded-lg">
@@ -137,7 +156,7 @@ const WorkshopRegistrationsPage = () => {
           </CardContent>
         </Card>
 
-        <Card className="bg-white dark:bg-black border dark:border-zinc-800">
+        <Card onClick={() => setActiveFilter('today')} className="cursor-pointer bg-white dark:bg-black border dark:border-zinc-800">
           <CardContent className="pt-6">
             <div className="flex items-center space-x-4">
               <div className="p-2 bg-purple-100 dark:bg-purple-900 rounded-lg">
@@ -151,7 +170,7 @@ const WorkshopRegistrationsPage = () => {
           </CardContent>
         </Card>
 
-        <Card className="bg-white dark:bg-black border dark:border-zinc-800">
+        <Card onClick={() => setActiveFilter('thisWeek')} className="cursor-pointer bg-white dark:bg-black border dark:border-zinc-800">
           <CardContent className="pt-6">
             <div className="flex items-center space-x-4">
               <div className="p-2 bg-amber-100 dark:bg-amber-900 rounded-lg">
@@ -166,13 +185,13 @@ const WorkshopRegistrationsPage = () => {
         </Card>
       </div>
 
-      {registrations.length === 0 ? (
+      {filteredRegistrations.length === 0 ? (
         <div className="text-center py-12 bg-white dark:bg-black border dark:border-zinc-800 rounded-lg">
           <p className="text-neutral-600 dark:text-neutral-300">No registrations found</p>
         </div>
       ) : (
         <div className="space-y-4">
-          {registrations.map((registration) => (
+          {filteredRegistrations.map((registration) => (
             <div 
               key={registration._id} 
               className="bg-white dark:bg-black border dark:border-zinc-800 rounded-lg p-6 shadow-sm"
@@ -180,32 +199,21 @@ const WorkshopRegistrationsPage = () => {
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 <div>
                   <p className="text-sm font-medium text-neutral-600 dark:text-neutral-300">Name</p>
-                  <p className="mt-1 font-semibold text-neutral-800 dark:text-neutral-200">
-                    {registration.firstname} {registration.lastname}
-                  </p>
+                  <p className="mt-1 font-semibold text-neutral-800 dark:text-neutral-200">{registration.firstname} {registration.lastname}</p>
                 </div>
                 <div>
                   <p className="text-sm font-medium text-neutral-600 dark:text-neutral-300">Email</p>
-                  <p className="mt-1 font-semibold text-neutral-800 dark:text-neutral-200">
-                    {registration.email}
-                  </p>
+                  <p className="mt-1 text-neutral-800 dark:text-neutral-200">{registration.email}</p>
                 </div>
                 <div>
-                  <p className="text-sm font-medium text-neutral-600 dark:text-neutral-300">Registration Date</p>
-                  <p className="mt-1 text-neutral-800 dark:text-neutral-200">
-                    {new Date(registration.createdAt).toLocaleDateString()}
-                  </p>
+                  <p className="text-sm font-medium text-neutral-600 dark:text-neutral-300">Registered On</p>
+                  <p className="mt-1 text-neutral-800 dark:text-neutral-200">{new Date(registration.createdAt).toLocaleDateString()}</p>
                 </div>
                 <div>
-                  <p className="text-sm font-medium text-neutral-600 dark:text-neutral-300">Payment Status</p>
-                  <span className={cn(
-                    "inline-block mt-1 px-2 py-1 rounded text-sm font-medium",
-                    registration.paymentStatus === 'completed' 
-                      ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-100"
-                      : "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-100"
-                  )}>
+                  <p className="text-sm font-medium text-neutral-600 dark:text-neutral-300">Status</p>
+                  <p className={cn("mt-1 font-semibold", registration.paymentStatus === 'completed' ? "text-green-600 dark:text-green-400" : "text-yellow-600 dark:text-yellow-400")}>
                     {registration.paymentStatus === 'completed' ? 'Paid' : 'Pending'}
-                  </span>
+                  </p>
                 </div>
               </div>
             </div>

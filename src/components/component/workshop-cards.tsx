@@ -2,6 +2,7 @@
 import { motion } from 'framer-motion';
 import { HoverEffect } from "@/components/ui/card-hover-effect";
 import Link from 'next/link';
+import ShinyButton from '../magicui/shiny-button';
 
 const workshopCards = [
   { title: "Web Development", image: "/wd.jpg", description: "Master modern web technologies and frameworks." },
@@ -38,9 +39,13 @@ function WorkshopCards() {
       }))} />
 
       <div className='flex items-center justify-center'>
-        <Link href='https://enbquantum.co.in/'>
-          <button className='border rounded-md border-black bg-white px-12 py-3 uppercase'>Explore</button>
-        </Link>
+        <Link href="/">
+              <ShinyButton text="Learn More" className="bg-transparent border border-primary text-primary">
+                <span className="inline-flex h-8 items-center justify-center rounded-md px-4 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50">
+                  Learn More
+                </span>
+              </ShinyButton>
+            </Link>
       </div>
       
     </div>
