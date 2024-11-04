@@ -76,7 +76,7 @@ export default function SignupFormDemo() {
   };
 
   const handlePayment = () => {
-    window.location.href = "https://rzp.io/rzp/O3S43wNr"; // Redirect to Razorpay payment link
+    window.location.href = "https://rzp.io/rzp/68HuAi1"; // Redirect to Razorpay payment link
   };
 
   return (
