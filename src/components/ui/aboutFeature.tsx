@@ -21,7 +21,6 @@ export default function Component() {
             <h3 className="text-xl font-bold">Continuous Improvement</h3>
           </div>
         </div>
-        //
         <div className="w-full max-w-md rounded-lg overflow-hidden shadow-lg">
           <img
             src="/placeholder.svg"
