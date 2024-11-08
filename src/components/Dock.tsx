@@ -2,10 +2,7 @@
 import React from "react";
 import Image from "next/legacy/image";
 import { InfoIcon, ClipboardIcon, BriefcaseIcon, MailIcon, MessageSquareIcon } from "lucide-react";
-import { Link as ScrollLink } from "react-scroll";
 import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
-import { buttonVariants } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import {
   Tooltip,

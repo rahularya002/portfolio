@@ -79,6 +79,8 @@ export default function SignupFormDemo() {
     window.location.href = "https://rzp.io/rzp/68HuAi1"; // Redirect to Razorpay payment link
   };
 
+  //add more payment methods 
+  //
   return (
     <div className="max-w-md w-full mx-auto rounded-none md:rounded-2xl p-4 md:p-8 shadow-input bg-white dark:bg-black border">
       <h2 className="font-bold text-xl text-neutral-800 dark:text-neutral-200">
