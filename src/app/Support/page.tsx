@@ -42,17 +42,6 @@ export default function Component() {
                 <MessageCircle className="w-6 h-6 text-primary" />
                 <span className="text-lg">Live chat available 9 AM - 5 PM IST</span>
               </div>
-              <div className="flex space-x-4 mt-6">
-                <Button variant="outline" size="icon" className="rounded-full">
-                  <Facebook className="w-5 h-5" />
-                </Button>
-                <Button variant="outline" size="icon" className="rounded-full">
-                  <Twitter className="w-5 h-5" />
-                </Button>
-                <Button variant="outline" size="icon" className="rounded-full">
-                  <Linkedin className="w-5 h-5" />
-                </Button>
-              </div>
             </CardContent>
           </Card>
 
