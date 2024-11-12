@@ -32,15 +32,15 @@ export default function Component() {
             <CardContent className="space-y-6">
               <div className="flex items-center space-x-3">
                 <Mail className="w-6 h-6 text-primary" />
-                <span className="text-lg">support@aiworkshop.com</span>
+                <span className="text-lg">info@mdinfosystems.com</span>
               </div>
               <div className="flex items-center space-x-3">
                 <Phone className="w-6 h-6 text-primary" />
-                <span className="text-lg">+1 (555) 123-4567</span>
+                <span className="text-lg">+91-9868735399</span>
               </div>
               <div className="flex items-center space-x-3">
                 <MessageCircle className="w-6 h-6 text-primary" />
-                <span className="text-lg">Live chat available 9 AM - 5 PM EST</span>
+                <span className="text-lg">Live chat available 9 AM - 5 PM IST</span>
               </div>
               <div className="flex space-x-4 mt-6">
                 <Button variant="outline" size="icon" className="rounded-full">
@@ -66,19 +66,19 @@ export default function Component() {
                 <AccordionItem value="item-1">
                   <AccordionTrigger>How do I access the workshop materials?</AccordionTrigger>
                   <AccordionContent>
-                    You can access all workshop materials through our online learning platform. Login details will be sent to your registered email address.
+                    All the workshop material will be sent to you via Email as PDF.
                   </AccordionContent>
                 </AccordionItem>
                 <AccordionItem value="item-2">
                   <AccordionTrigger>What if I miss a live session?</AccordionTrigger>
                   <AccordionContent>
-                    Don't worry! All live sessions are recorded and made available in the learning platform within 24 hours.
+                    There wont be any recordings provided to if you miss the live session. we will be reminding you for the workshop via email before the prior date, although the notes will still be there
                   </AccordionContent>
                 </AccordionItem>
                 <AccordionItem value="item-3">
                   <AccordionTrigger>Is there a refund policy?</AccordionTrigger>
                   <AccordionContent>
-                    Yes, we offer a 7-day money-back guarantee if you're not satisfied with the workshop content.
+                    Yes, we offer a 24 hours moneyback gurantee before the workshop in case you are unable to attend the workshop.
                   </AccordionContent>
                 </AccordionItem>
                 <AccordionItem value="item-4">

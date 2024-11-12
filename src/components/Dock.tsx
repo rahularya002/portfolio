@@ -21,7 +21,7 @@ export type IconProps = React.HTMLAttributes<SVGElement>;
 
 const Icons = {
   logo: (props: React.HTMLAttributes<HTMLImageElement>) => (
-    <Image src={Logo} alt="Logo" {...props} />
+    <Image src={Logo} alt="Logo" {...props} width={24} height={24}/>
   ),
   about: (props: IconProps) => <InfoIcon {...props} />,
   services: (props: IconProps) => <ClipboardIcon {...props} />,

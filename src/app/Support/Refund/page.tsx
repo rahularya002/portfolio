@@ -32,7 +32,7 @@ export default function RefundPolicy() {
             <div className="pl-6 space-y-4">
               <div className="flex items-start">
                 <Clock className="w-6 h-6 mr-2 flex-shrink-0 text-primary" />
-                <p><strong>7-Day Money-Back Guarantee:</strong> If you're not satisfied with the workshop content, you can request a full refund within 7 days of your purchase.</p>
+                <p><strong>Refund before Workshop:</strong> If you feel like not attending the workshop for any reasons, you can inititate your refund before 24 hours of the prior date of workshop.</p>
               </div>
               <div className="flex items-start">
                 <HelpCircle className="w-6 h-6 mr-2 flex-shrink-0 text-primary" />
@@ -40,7 +40,7 @@ export default function RefundPolicy() {
               </div>
             </div>
 
-            <p>To request a refund, please contact our support team at support@aiworkshop.com with your order details. We aim to process all refund requests within 3-5 business days.</p>
+            <p>To request a refund, please contact our support team at info@mdinfosystems.com with your order details. We aim to process all refund requests within 3-5 business days.</p>
 
             <p><strong>Please Note:</strong> After the 7-day period, refunds will be considered on a case-by-case basis. We may offer partial refunds or workshop credit for special circumstances.</p>
           </CardContent>
@@ -56,19 +56,13 @@ export default function RefundPolicy() {
               <AccordionItem value="item-1">
                 <AccordionTrigger>How do I request a refund?</AccordionTrigger>
                 <AccordionContent>
-                  To request a refund, simply email our support team at support@aiworkshop.com with your order number and the reason for your refund request. We'll process your request as quickly as possible.
+                  To request a refund, simply email our support team at info@mdinfosystems.com with your order number and the reason for your refund request. We'll process your request as quickly as possible.
                 </AccordionContent>
               </AccordionItem>
               <AccordionItem value="item-2">
-                <AccordionTrigger>Can I get a refund after the 7-day period?</AccordionTrigger>
+                <AccordionTrigger>Can I get a refund before the Workshop?</AccordionTrigger>
                 <AccordionContent>
-                  After the 7-day period, refunds are considered on a case-by-case basis. Please contact our support team to discuss your situation, and we'll do our best to find a solution.
-                </AccordionContent>
-              </AccordionItem>
-              <AccordionItem value="item-3">
-                <AccordionTrigger>Do you offer partial refunds?</AccordionTrigger>
-                <AccordionContent>
-                  In some cases, we may offer partial refunds or workshop credit if you've completed a portion of the course. These situations are evaluated individually by our support team.
+                  Before 24 Hours time period, refunds are considered on a case-by-case basis. Please contact our support team to discuss your situation, and we'll do our best to find a solution.
                 </AccordionContent>
               </AccordionItem>
               <AccordionItem value="item-4">
