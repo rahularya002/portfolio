@@ -1,8 +1,6 @@
-import { Mail, Phone, MessageCircle, Facebook, Twitter, Linkedin, LifeBuoy } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import { Mail, Phone, MessageCircle, LifeBuoy, MapPin } from "lucide-react"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
-import { Element } from "react-scroll";
 import Contact from "@/components/Contact"
 import WorkshopNav from "@/components/component/workshop-nav"
 import Footer from "@/components/Footer"
@@ -41,6 +39,11 @@ export default function Component() {
               <div className="flex items-center space-x-3">
                 <MessageCircle className="w-6 h-6 text-primary" />
                 <span className="text-lg">Live chat available 9 AM - 5 PM IST</span>
+              </div>
+              <div className="flex items-center space-x-3">
+                
+                <MapPin className="w-6 h-6 text-primary" />
+                <span className="text-lg">Suncity Trade Tower, 418 B, Sector 21, Gurugram, Haryana 122016</span>
               </div>
             </CardContent>
           </Card>
