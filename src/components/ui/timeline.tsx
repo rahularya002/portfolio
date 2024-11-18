@@ -42,7 +42,7 @@ export const Timeline = ({ data }: { data: TimelineEntry[] }) => {
           About Us
         </h2>
         <p className="text-neutral-700 dark:text-neutral-300 text-sm md:text-base max-w-3xl">
-        At MD Infosystems Pvt. Ltd. and MD Quantum Innovations, we specialize in AI-driven solutions that transform businesses. From mobile apps and web development to digital marketing and creative content, our cutting-edge services deliver innovation and growth.
+        At MD Infosystems Pvt. Ltd. and EnbQuantum AI Solutions, we specialize in AI-driven solutions that transform businesses. From mobile apps and web development to digital marketing and creative content, our cutting-edge services deliver innovation and growth.
         </p>
       </div>
 

@@ -78,9 +78,16 @@ export async function POST(req) {
       );
     }
 
-    // Insert the user into the database with a timeout
+    // Insert the user into the database with a status of 'notPaid'
     const result = await Promise.race([
-      collection.insertOne({ firstname, lastname, email, password, createdAt: new Date() }),
+      collection.insertOne({
+        firstname,
+        lastname,
+        email,
+        password,
+        status: "notPaid", // Initial status indicating payment not made
+        createdAt: new Date(),
+      }),
       new Promise((_, reject) =>
         setTimeout(() => reject(new Error("Operation timed out")), 9000)
       ),
@@ -104,25 +111,6 @@ export async function POST(req) {
     }
 
     // Generic error handling for other issues
-    return NextResponse.json(
-      { message: "Internal Server Error", error: error.message },
-      { status: 500 }
-    );
-  }
-}
-
-// GET handler for fetching all users (Optional)
-export async function GET(req) {
-  try {
-    const { db } = await connectToDatabase();
-    const collection = db.collection("users");
-
-    // Fetch all users from the database
-    const users = await collection.find({}).toArray();
-
-    return NextResponse.json(users, { status: 200 });
-  } catch (error) {
-    console.error("Error in GET request:", error.message);
     return NextResponse.json(
       { message: "Internal Server Error", error: error.message },
       { status: 500 }

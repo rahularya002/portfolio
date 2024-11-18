@@ -19,7 +19,7 @@ function WorkshopAccordion() {
     { title: "Introduction to AI and MD Infosystems (MDI)", content: "Learn the basics of Artificial Intelligence and how MD Infosystems is at the forefront of AI development." },
     { title: "What is AGI (Artificial General Intelligence)?", content: "Discover the future of AI beyond narrow applications—Artificial General Intelligence—and the ethical implications of its development." },
     { title: "ChatGPT: Revolutionizing Communication", content: "Explore how ChatGPT is transforming customer service, content creation, and automated assistance." },
-    { title: "Exploring AI Models: Gemini, Claude, and Perplexity", content: "Learn the differences between leading AI models and how each one is specialized for different tasks." },
+    { title: "Exploring AI Models: Gemini, Claude etc.", content: "Learn the differences between leading AI models and how each one is specialized for different tasks." },
     { title: "Suno Music: Create Your Own Song with AI", content: "Get hands-on with Suno Music, an AI tool that helps you compose original music in minutes." },
     { title: "AI-Generated Movies: The Future of Filmmaking", content: "Dive into the world of AI-driven content creation and learn how movies can be generated using AI." },
     { title: "AI in Commercial Video Creation", content: "Discover how AI can help you quickly generate high-quality commercial videos for marketing campaigns." },
@@ -56,6 +56,18 @@ function WorkshopAccordion() {
     setCurrentImage(index % images.length);
   };
 
+  const colorPalettes = [
+    "bg-pink-100 text-pink-800", // Light pink
+    "bg-blue-100 text-blue-800", // Light blue
+    "bg-green-100 text-green-800", // Light green
+    "bg-yellow-100 text-yellow-800", // Light yellow
+    "bg-purple-100 text-purple-800", // Light purple
+    "bg-teal-100 text-teal-800", // Light teal
+    "bg-orange-100 text-orange-800", // Light orange
+    "bg-red-100 text-red-800", // Light red
+    "bg-indigo-100 text-indigo-800", // Light indigo
+  ];
+
   return (
     <div className="min-h-[80vh] flex items-center sm:px-6">
       <div className="w-full max-w-6xl mx-auto">
@@ -81,30 +93,31 @@ function WorkshopAccordion() {
             </div>
           </div>
           <div className="w-full md:w-1/2 flex flex-col max-h-[600px]">
-            <h2 className="text-black dark:text-white text-4xl md:text-5xl font-bold mb-8 text-center ">
+            <h2 className="text-black dark:text-white text-4xl md:text-5xl font-bold mb-8 text-center">
               What Will You Learn
             </h2>
             <div className="overflow-y-auto pr-4 scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-transparent">
               <Accordion type="single" collapsible className="w-full h-80">
                 {accordionItems.slice(0, visibleItems).map((item, index) => (
-                  <AccordionItem key={index} value={`item-${index}`} className="mb-4">
-                    <AccordionTrigger 
+                  <AccordionItem
+                    key={index}
+                    value={`item-${index}`}
+                    className={`mb-4 ${colorPalettes[index % colorPalettes.length]} rounded-lg`}
+                  >
+                    <AccordionTrigger
                       onClick={() => handleAccordionChange(index)}
-                      className="text-black dark:text-white text-lg md:text-xl py-3 px-4 hover:bg-black/10 dark:hover:bg-white/10 transition-colors duration-300"
+                      className={`text-lg md:text-xl py-3 px-4 hover:bg-opacity-80 transition-colors duration-300 ${colorPalettes[index % colorPalettes.length]}`}
                     >
                       {item.title}
                     </AccordionTrigger>
-                    <AccordionContent className="text-gray-700 dark:text-gray-300 py-4 px-6 bg-black/5 dark:bg-white/5 rounded-b-lg">
+                    <AccordionContent className="text-gray-700 py-4 px-6 rounded-b-lg text-left">
                       <p className="leading-relaxed">{item.content}</p>
-                      <button className="mt-4 text-blue-600 dark:text-blue-400 hover:text-blue-500 dark:hover:text-blue-300 transition-colors duration-300">
-                        Learn more →
-                      </button>
                     </AccordionContent>
                   </AccordionItem>
                 ))}
               </Accordion>
               {visibleItems < accordionItems.length && (
-                <div 
+                <div
                   ref={loadMoreRef}
                   className="w-full h-8 flex items-center justify-center text-gray-500 mt-4"
                 >
