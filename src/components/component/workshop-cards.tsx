@@ -39,7 +39,7 @@ function WorkshopCards() {
       }))} />
 
       <div className='flex items-center justify-center'>
-        <Link href="/">
+        <Link href="http://mdinfosystems.in/">
               <ShinyButton text="Learn More" className="bg-transparent border border-primary text-primary">
                 <span className="inline-flex h-8 items-center justify-center rounded-md px-4 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50">
                   Learn More
