@@ -1,3 +1,4 @@
+// src/app/layout.tsx
 import { Inter } from 'next/font/google';
 import { cn } from '@/lib/utils';
 import './globals.css';
@@ -5,7 +6,8 @@ import LenisScroll from './LenisScroll';
 import { Toaster } from "@/components/ui/toaster";
 import { Montserrat } from 'next/font/google';
 import TopLoader from "@/components/Toploader";
-import Script from 'next/script'; // Import Script component from Next.js
+import Script from 'next/script';
+import { initGA, GA_TRACKING_ID } from '@/lib/gtag';
 
 const fontHeading = Inter({
   subsets: ['latin'],
@@ -25,7 +27,7 @@ const montserrat = Montserrat({
 });
 
 import { Metadata } from 'next';
- 
+
 export const metadata: Metadata = {
   title: 'ENB Quantum',
   description: 'The official ENB Quantum website.',
@@ -33,29 +35,22 @@ export const metadata: Metadata = {
 };
 
 export default function Layout({ children }: { children: React.ReactNode }) {
+  // Initialize Google Analytics
+  if (typeof window !== 'undefined') {
+    initGA();
+  }
+
   return (
     <html lang="en" className={`${montserrat.variable} font-sans`}>
       <head>
-        {/* Add the Google Tag Manager script */}
+        {/* Google Tag Manager Script */}
         <Script
           async
-          src="https://www.googletagmanager.com/gtag/js?id=G-SR3X8XW7YH"
+          src={`https://www.googletagmanager.com/gtag/js?id=${GA_TRACKING_ID}`}
         ></Script>
-        <Script id="google-analytics">
-          {`
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', 'G-SR3X8XW7YH');
-          `}
-        </Script>
       </head>
-      <body 
-        className={cn(
-          'antialiased',
-          fontHeading.variable,
-          fontBody.variable
-        )} 
+      <body
+        className={cn('antialiased', fontHeading.variable, fontBody.variable)}
       >
         <TopLoader />
         <LenisScroll />
@@ -63,5 +58,5 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         {children}
       </body>
     </html>
-  )
+  );
 }

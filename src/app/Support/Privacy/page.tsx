@@ -1,11 +1,18 @@
+"use client"
 import { ArrowLeft, Shield, Lock, Eye, Database } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import WorkshopNav from "@/components/component/workshop-nav"
 import Link from "next/link"
+import { initGA } from '@/lib/gtag';
+import { useEffect } from "react"
 
 export default function PrivacyPolicy() {
+  useEffect(() => {
+    initGA(); // Call the function to initialize GA
+  }, []);
+
   return (
     <div className="min-h-screen bg-gray-100 dark:bg-gray-900">
       <WorkshopNav />
