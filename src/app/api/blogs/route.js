@@ -1,182 +1,133 @@
-import { NextResponse } from "next/server";
-import { MongoClient, ObjectId } from "mongodb";
-import LRU from "lru-cache";
+const { NextResponse } = require("next/server");
+const { MongoClient, ObjectId } = require("mongodb");
 
-// Create LRU cache
-const blogCache = new LRU({
-  max: 500, // Maximum number of items in cache
-  ttl: 1000 * 60, // 1 minute cache duration
-  updateAgeOnGet: false
-});
+// Caching the database client for connection reuse
+let cachedClient = null;
 
-// Global connection management
-class DatabaseManager {
-  static client = null;
-  static db = null;
-
-  static async connect() {
-    if (this.client) return this.client;
-
-    try {
-      this.client = await MongoClient.connect(process.env.MONGO_URI2, {
-        maxPoolSize: 20,
-        minPoolSize: 5,
-        socketTimeoutMS: 5000,
-        connectTimeoutMS: 5000
-      });
-      
-      this.db = this.client.db("Blogs");
-
-      // Create performance indexes
-      await this.db.collection("blogposts").createIndexes([
-        { key: { category: 1 }, name: "category_index" },
-        { key: { createdAt: -1 }, name: "creation_date_index" }
-      ]);
-
-      return this.client;
-    } catch (error) {
-      console.error("Database connection failed:", error);
-      throw error;
-    }
+async function connectToDatabase() {
+  if (cachedClient) {
+    return cachedClient;
   }
-
-  static generateCacheKey(params) {
-    return JSON.stringify(params);
-  }
-}
-
-export async function GET(req) {
   try {
-    await DatabaseManager.connect();
-    const db = DatabaseManager.db;
-    
-    const url = new URL(req.url);
-    const id = url.searchParams.get("id");
-    const category = url.searchParams.get("category");
-    const page = Math.max(parseInt(url.searchParams.get("page") || "1"), 1);
-    const limit = Math.max(parseInt(url.searchParams.get("limit") || "10"), 1);
-
-    // Generate cache key
-    const cacheParams = { id, category, page, limit };
-    const cacheKey = DatabaseManager.generateCacheKey(cacheParams);
-
-    // Check cache
-    const cachedResponse = blogCache.get(cacheKey);
-    if (cachedResponse) {
-      return NextResponse.json(cachedResponse, {
-        headers: { 'Cache-Control': 'public, max-age=60' }
-      });
-    }
-
-    let result;
-    if (id) {
-      // Fetch single blog post
-      result = await db.collection("blogposts").findOne(
-        { _id: new ObjectId(id) },
-        { 
-          projection: { 
-            content: 0,  // Exclude large content
-            images: { $slice: 1 }  // Only first image
-          } 
-        }
-      );
-
-      if (!result) {
-        return NextResponse.json({ message: "Blog not found" }, { status: 404 });
-      }
-    } else {
-      // Fetch blog list
-      const query = category ? { category } : {};
-      const [blogs, total] = await Promise.all([
-        db.collection("blogposts")
-          .find(query)
-          .project({ 
-            content: 0,  // Exclude full content
-            images: { $slice: 1 }  // Only first image
-          })
-          .sort({ createdAt: -1 })
-          .skip((page - 1) * limit)
-          .limit(limit)
-          .toArray(),
-        db.collection("blogposts").countDocuments(query)
-      ]);
-
-      result = { 
-        blogs, 
-        total, 
-        page, 
-        limit,
-        hasMore: total > page * limit 
-      };
-    }
-
-    // Cache the response
-    blogCache.set(cacheKey, result);
-
-    return NextResponse.json(result);
-  } catch (error) {
-    console.error("Query error:", error);
-    return NextResponse.json(
-      { message: "Query failed", error: error.message },
-      { status: 500 }
-    );
+    const client = await MongoClient.connect(process.env.MONGO_URI2, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+    cachedClient = client;
+    return client;
+  } catch (err) {
+    console.error("Error connecting to MongoDB:", err.message);
+    throw new Error("Database connection failed");
   }
 }
 
+// POST: Create a new blog post
 export async function POST(req) {
   try {
-    await DatabaseManager.connect();
-    const db = DatabaseManager.db;
+    const client = await connectToDatabase();
+    const db = client.db("Blogs");
 
     const formData = await req.formData();
 
-    // Minimal validation
-    const requiredFields = ["title", "subtitle", "content", "author", "date", "category"];
-    for (const field of requiredFields) {
-      if (!formData.get(field)) {
-        return NextResponse.json(
-          { message: `Missing required field: ${field}` },
-          { status: 400 }
-        );
+    // Extract fields
+    const title = formData.get("title");
+    const subtitle = formData.get("subtitle");
+    const content = formData.get("content");
+    const authorName = formData.get("author");
+    const date = formData.get("date");
+    const category = formData.get("category");
+
+    // Validate required fields
+    if (!title || !subtitle || !content || !authorName || !date || !category) {
+      return NextResponse.json(
+        { message: "All fields are required: title, subtitle, content, author, date, category" },
+        { status: 400 }
+      );
+    }
+
+    // Process images
+    const images = [];
+    for (const [key, value] of formData.entries()) {
+      if (key.startsWith("image")) {
+        const file = value;
+        const buffer = await file.arrayBuffer();
+        const base64 = Buffer.from(buffer).toString("base64");
+        images.push({
+          name: file.name,
+          type: file.type,
+          data: `data:${file.type};base64,${base64}`,
+        });
       }
     }
 
-    // Minimal image processing
-    const images = Array.from(formData.entries())
-      .filter(([key]) => key.startsWith("image"))
-      .map(([, file]) => ({
-        name: file.name,
-        type: file.type,
-        size: file.size
-      })).slice(0, 3);  // Limit to first 3 images
-
+    // Create the blog post object
     const blogPost = {
-      title: formData.get("title"),
-      subtitle: formData.get("subtitle"),
-      category: formData.get("category"),
-      author: { name: formData.get("author") },
-      date: new Date(formData.get("date")),
+      title,
+      subtitle,
+      content,
+      category,
+      date: new Date(date),
+      author: { name: authorName, image: "", bio: "" },
       images,
-      createdAt: new Date()
+      createdAt: new Date(),
+      updatedAt: new Date(),
     };
 
+    // Insert the blog post into the database
     const result = await db.collection("blogposts").insertOne(blogPost);
 
-    // Clear entire cache on new blog post
-    blogCache.clear();
-
     return NextResponse.json(
-      { message: "Blog Created", id: result.insertedId },
+      { message: "Blog Saved Successfully", id: result.insertedId },
       { status: 201 }
     );
   } catch (error) {
-    console.error("Creation error:", error);
+    console.error("Error in POST /api/blogs:", error.message);
     return NextResponse.json(
-      { message: "Creation failed", error: error.message },
+      { message: "Internal Server Error", error: error.message },
       { status: 500 }
     );
   }
 }
 
-// Configure Edge Runtime
-export const runtime = 'edge';
+// GET: Retrieve blog posts or a single post by ID
+export async function GET(req) {
+  try {
+    const client = await connectToDatabase();
+    const db = client.db("Blogs");
+
+    const url = new URL(req.url);
+    const id = url.searchParams.get("id");
+    const page = Math.max(parseInt(url.searchParams.get("page") || "1", 10), 1);
+    const limit = Math.max(parseInt(url.searchParams.get("limit") || "10", 10), 1);
+    const skip = (page - 1) * limit;
+    const category = url.searchParams.get("category");
+
+    if (id) {
+      // Fetch a single blog post by ID
+      const blog = await db.collection("blogposts").findOne({ _id: new ObjectId(id) });
+      if (!blog) {
+        return NextResponse.json({ message: "Blog not found" }, { status: 404 });
+      }
+      return NextResponse.json(blog);
+    } else {
+      // Fetch all blog posts with optional category filter
+      const query = category ? { category } : {};
+      const blogs = await db
+        .collection("blogposts")
+        .find(query)
+        .sort({ createdAt: -1 })
+        .skip(skip)
+        .limit(limit)
+        .toArray();
+      const total = await db.collection("blogposts").countDocuments(query);
+
+      return NextResponse.json({ blogs, total, page, limit });
+    }
+  } catch (error) {
+    console.error("Error in GET /api/blogs:", error.message);
+    return NextResponse.json(
+      { message: "Internal Server Error", error: error.message },
+      { status: 500 }
+    );
+  }
+}
