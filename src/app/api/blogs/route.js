@@ -1,12 +1,18 @@
 import { NextResponse } from "next/server";
 import { MongoClient, ObjectId } from "mongodb";
+import LRU from "lru-cache";
 
-// Global connection and cache management
-class DatabaseCache {
+// Create LRU cache
+const blogCache = new LRU({
+  max: 500, // Maximum number of items in cache
+  ttl: 1000 * 60, // 1 minute cache duration
+  updateAgeOnGet: false
+});
+
+// Global connection management
+class DatabaseManager {
   static client = null;
   static db = null;
-  static cache = new Map();
-  static cacheExpiry = new Map();
 
   static async connect() {
     if (this.client) return this.client;
@@ -18,9 +24,10 @@ class DatabaseCache {
         socketTimeoutMS: 5000,
         connectTimeoutMS: 5000
       });
+      
       this.db = this.client.db("Blogs");
 
-      // Create indexes for faster querying
+      // Create performance indexes
       await this.db.collection("blogposts").createIndexes([
         { key: { category: 1 }, name: "category_index" },
         { key: { createdAt: -1 }, name: "creation_date_index" }
@@ -33,33 +40,15 @@ class DatabaseCache {
     }
   }
 
-  static setCachedResponse(key, data) {
-    // Cache for 60 seconds
-    this.cache.set(key, data);
-    this.cacheExpiry.set(key, Date.now() + 60000);
-  }
-
-  static getCachedResponse(key) {
-    const expiry = this.cacheExpiry.get(key);
-    if (expiry && Date.now() < expiry) {
-      return this.cache.get(key);
-    }
-    
-    // Remove expired cache
-    this.cache.delete(key);
-    this.cacheExpiry.delete(key);
-    return null;
-  }
-
-  static clearCache() {
-    this.cache.clear();
-    this.cacheExpiry.clear();
+  static generateCacheKey(params) {
+    return JSON.stringify(params);
   }
 }
 
 export async function GET(req) {
   try {
-    await DatabaseCache.connect();
+    await DatabaseManager.connect();
+    const db = DatabaseManager.db;
     
     const url = new URL(req.url);
     const id = url.searchParams.get("id");
@@ -67,24 +56,22 @@ export async function GET(req) {
     const page = Math.max(parseInt(url.searchParams.get("page") || "1"), 1);
     const limit = Math.max(parseInt(url.searchParams.get("limit") || "10"), 1);
 
-    // Create a unique cache key
-    const cacheKey = `blogs:${id || 'list'}:${category || 'all'}:${page}:${limit}`;
+    // Generate cache key
+    const cacheParams = { id, category, page, limit };
+    const cacheKey = DatabaseManager.generateCacheKey(cacheParams);
 
-    // Check cache first
-    const cachedResponse = DatabaseCache.getCachedResponse(cacheKey);
+    // Check cache
+    const cachedResponse = blogCache.get(cacheKey);
     if (cachedResponse) {
       return NextResponse.json(cachedResponse, {
-        headers: { 
-          'Cache-Control': 'public, max-age=60, stale-while-revalidate=120' 
-        }
+        headers: { 'Cache-Control': 'public, max-age=60' }
       });
     }
 
-    const db = DatabaseCache.db;
-
+    let result;
     if (id) {
       // Fetch single blog post
-      const blog = await db.collection("blogposts").findOne(
+      result = await db.collection("blogposts").findOne(
         { _id: new ObjectId(id) },
         { 
           projection: { 
@@ -94,12 +81,9 @@ export async function GET(req) {
         }
       );
 
-      if (!blog) {
+      if (!result) {
         return NextResponse.json({ message: "Blog not found" }, { status: 404 });
       }
-
-      DatabaseCache.setCachedResponse(cacheKey, blog);
-      return NextResponse.json(blog);
     } else {
       // Fetch blog list
       const query = category ? { category } : {};
@@ -117,17 +101,19 @@ export async function GET(req) {
         db.collection("blogposts").countDocuments(query)
       ]);
 
-      const response = { 
+      result = { 
         blogs, 
         total, 
         page, 
         limit,
         hasMore: total > page * limit 
       };
-
-      DatabaseCache.setCachedResponse(cacheKey, response);
-      return NextResponse.json(response);
     }
+
+    // Cache the response
+    blogCache.set(cacheKey, result);
+
+    return NextResponse.json(result);
   } catch (error) {
     console.error("Query error:", error);
     return NextResponse.json(
@@ -139,8 +125,8 @@ export async function GET(req) {
 
 export async function POST(req) {
   try {
-    await DatabaseCache.connect();
-    const db = DatabaseCache.db;
+    await DatabaseManager.connect();
+    const db = DatabaseManager.db;
 
     const formData = await req.formData();
 
@@ -176,8 +162,8 @@ export async function POST(req) {
 
     const result = await db.collection("blogposts").insertOne(blogPost);
 
-    // Clear all cached responses
-    DatabaseCache.clearCache();
+    // Clear entire cache on new blog post
+    blogCache.clear();
 
     return NextResponse.json(
       { message: "Blog Created", id: result.insertedId },
@@ -192,5 +178,5 @@ export async function POST(req) {
   }
 }
 
-// Configure Edge Runtime for faster cold starts
+// Configure Edge Runtime
 export const runtime = 'edge';
