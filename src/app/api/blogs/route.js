@@ -1,132 +1,196 @@
-const { NextResponse } = require("next/server");
-const { MongoClient, ObjectId } = require("mongodb");
+import { NextResponse } from "next/server";
+import { MongoClient, ObjectId } from "mongodb";
 
-// Caching the database client
-let cachedClient = null;
+// Global connection and cache management
+class DatabaseCache {
+  static client = null;
+  static db = null;
+  static cache = new Map();
+  static cacheExpiry = new Map();
 
-async function connectToDatabase() {
-  if (cachedClient) {
-    return cachedClient;
+  static async connect() {
+    if (this.client) return this.client;
+
+    try {
+      this.client = await MongoClient.connect(process.env.MONGO_URI2, {
+        maxPoolSize: 20,
+        minPoolSize: 5,
+        socketTimeoutMS: 5000,
+        connectTimeoutMS: 5000
+      });
+      this.db = this.client.db("Blogs");
+
+      // Create indexes for faster querying
+      await this.db.collection("blogposts").createIndexes([
+        { key: { category: 1 }, name: "category_index" },
+        { key: { createdAt: -1 }, name: "creation_date_index" }
+      ]);
+
+      return this.client;
+    } catch (error) {
+      console.error("Database connection failed:", error);
+      throw error;
+    }
   }
-  const client = await MongoClient.connect(process.env.MONGO_URI2, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  });
-  cachedClient = client;
-  return client;
-}
 
-// POST: Create a new blog post
-export async function POST(req) {
-  try {
-    const client = await connectToDatabase();
-    const db = client.db("Blogs");
+  static setCachedResponse(key, data) {
+    // Cache for 60 seconds
+    this.cache.set(key, data);
+    this.cacheExpiry.set(key, Date.now() + 60000);
+  }
 
-    const formData = await req.formData();
-
-    // Extract fields from form data
-    const title = formData.get("title");
-    const subtitle = formData.get("subtitle");
-    const content = formData.get("content");
-    const authorName = formData.get("author");
-    const date = formData.get("date");
-    const category = formData.get("category");
-
-    // Validate required fields
-    if (!title || !subtitle || !content || !authorName || !date || !category) {
-      return NextResponse.json(
-        { message: "All fields are required: title, subtitle, content, author, date, category" },
-        { status: 400 }
-      );
+  static getCachedResponse(key) {
+    const expiry = this.cacheExpiry.get(key);
+    if (expiry && Date.now() < expiry) {
+      return this.cache.get(key);
     }
+    
+    // Remove expired cache
+    this.cache.delete(key);
+    this.cacheExpiry.delete(key);
+    return null;
+  }
 
-    // Process images
-    const images = [];
-    for (const [key, value] of formData.entries()) {
-      if (key.startsWith("image")) {
-        const file = value;
-        const buffer = await file.arrayBuffer();
-        const base64 = Buffer.from(buffer).toString("base64");
-        images.push({
-          name: file.name,
-          type: file.type,
-          data: `data:${file.type};base64,${base64}`,
-        });
-      }
-    }
-
-    // Create the blog post object
-    const blogPost = {
-      title,
-      subtitle,
-      content,
-      category,
-      date: new Date(date),
-      author: { name: authorName, image: "", bio: "" },
-      images,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    };
-
-    // Insert the blog post into the database
-    const result = await db.collection("blogposts").insertOne(blogPost);
-
-    if (!result.insertedId) {
-      throw new Error("Failed to insert blog post");
-    }
-
-    return NextResponse.json(
-      { message: "Blog Saved Successfully", id: result.insertedId },
-      { status: 201 }
-    );
-  } catch (error) {
-    console.error("Error in POST /api/blogs:", error);
-    return NextResponse.json(
-      { message: "Internal Server Error" },
-      { status: 500 }
-    );
+  static clearCache() {
+    this.cache.clear();
+    this.cacheExpiry.clear();
   }
 }
 
-// GET: Retrieve blog posts or a single post by ID
 export async function GET(req) {
   try {
-    const client = await connectToDatabase();
-    const db = client.db("Blogs");
-
+    await DatabaseCache.connect();
+    
     const url = new URL(req.url);
     const id = url.searchParams.get("id");
-    const page = Math.max(parseInt(url.searchParams.get("page") || "1", 10), 1);
-    const limit = Math.max(parseInt(url.searchParams.get("limit") || "10", 10), 1);
-    const skip = (page - 1) * limit;
     const category = url.searchParams.get("category");
+    const page = Math.max(parseInt(url.searchParams.get("page") || "1"), 1);
+    const limit = Math.max(parseInt(url.searchParams.get("limit") || "10"), 1);
+
+    // Create a unique cache key
+    const cacheKey = `blogs:${id || 'list'}:${category || 'all'}:${page}:${limit}`;
+
+    // Check cache first
+    const cachedResponse = DatabaseCache.getCachedResponse(cacheKey);
+    if (cachedResponse) {
+      return NextResponse.json(cachedResponse, {
+        headers: { 
+          'Cache-Control': 'public, max-age=60, stale-while-revalidate=120' 
+        }
+      });
+    }
+
+    const db = DatabaseCache.db;
 
     if (id) {
-      // Fetch a single blog post by ID
-      const blog = await db.collection("blogposts").findOne({ _id: new ObjectId(id) });
+      // Fetch single blog post
+      const blog = await db.collection("blogposts").findOne(
+        { _id: new ObjectId(id) },
+        { 
+          projection: { 
+            content: 0,  // Exclude large content
+            images: { $slice: 1 }  // Only first image
+          } 
+        }
+      );
+
       if (!blog) {
         return NextResponse.json({ message: "Blog not found" }, { status: 404 });
       }
+
+      DatabaseCache.setCachedResponse(cacheKey, blog);
       return NextResponse.json(blog);
     } else {
-      // Fetch all blog posts with optional category filter
+      // Fetch blog list
       const query = category ? { category } : {};
-      const blogs = await db
-        .collection("blogposts")
-        .find(query)
-        .sort({ createdAt: -1 })
-        .skip(skip)
-        .limit(limit)
-        .toArray();
-      const total = await db.collection("blogposts").countDocuments(query);
+      const [blogs, total] = await Promise.all([
+        db.collection("blogposts")
+          .find(query)
+          .project({ 
+            content: 0,  // Exclude full content
+            images: { $slice: 1 }  // Only first image
+          })
+          .sort({ createdAt: -1 })
+          .skip((page - 1) * limit)
+          .limit(limit)
+          .toArray(),
+        db.collection("blogposts").countDocuments(query)
+      ]);
 
-      return NextResponse.json({ blogs, total, page, limit });
+      const response = { 
+        blogs, 
+        total, 
+        page, 
+        limit,
+        hasMore: total > page * limit 
+      };
+
+      DatabaseCache.setCachedResponse(cacheKey, response);
+      return NextResponse.json(response);
     }
   } catch (error) {
-    console.error("Error in GET /api/blogs:", error);
+    console.error("Query error:", error);
     return NextResponse.json(
-      { message: "Internal Server Error" },
+      { message: "Query failed", error: error.message },
       { status: 500 }
     );
   }
 }
+
+export async function POST(req) {
+  try {
+    await DatabaseCache.connect();
+    const db = DatabaseCache.db;
+
+    const formData = await req.formData();
+
+    // Minimal validation
+    const requiredFields = ["title", "subtitle", "content", "author", "date", "category"];
+    for (const field of requiredFields) {
+      if (!formData.get(field)) {
+        return NextResponse.json(
+          { message: `Missing required field: ${field}` },
+          { status: 400 }
+        );
+      }
+    }
+
+    // Minimal image processing
+    const images = Array.from(formData.entries())
+      .filter(([key]) => key.startsWith("image"))
+      .map(([, file]) => ({
+        name: file.name,
+        type: file.type,
+        size: file.size
+      })).slice(0, 3);  // Limit to first 3 images
+
+    const blogPost = {
+      title: formData.get("title"),
+      subtitle: formData.get("subtitle"),
+      category: formData.get("category"),
+      author: { name: formData.get("author") },
+      date: new Date(formData.get("date")),
+      images,
+      createdAt: new Date()
+    };
+
+    const result = await db.collection("blogposts").insertOne(blogPost);
+
+    // Clear all cached responses
+    DatabaseCache.clearCache();
+
+    return NextResponse.json(
+      { message: "Blog Created", id: result.insertedId },
+      { status: 201 }
+    );
+  } catch (error) {
+    console.error("Creation error:", error);
+    return NextResponse.json(
+      { message: "Creation failed", error: error.message },
+      { status: 500 }
+    );
+  }
+}
+
+// Configure Edge Runtime for faster cold starts
+export const runtime = 'edge';
