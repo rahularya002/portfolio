@@ -48,6 +48,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           async
           src={`https://www.googletagmanager.com/gtag/js?id=${GA_TRACKING_ID}`}
         ></Script>
+        <meta name='google-site-verification' content='google463bf911f6397616.html'/>
+        
       </head>
       <body
         className={cn('antialiased', fontHeading.variable, fontBody.variable)}

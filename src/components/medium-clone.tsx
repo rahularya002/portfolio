@@ -1,117 +1,201 @@
-'use client'
+import React, { useEffect, useState, useRef, useCallback } from 'react';
+import { useRouter } from 'next/navigation';
+import { Loader2 } from 'lucide-react';
 
-import { useState } from 'react'
-import { Button } from "@/components/ui/button"
+interface Blog {
+  id: string;
+  title: string;
+  excerpt: string; // Use a short excerpt or first few characters of the content
+  author: string;
+  date: string;
+  readTime: string;
+  category: string;
+  images?: string[];
+}
+
+interface BlogResponse {
+  blogs: Blog[];
+  hasMore: boolean;
+  total: number;
+}
+
+interface FetchBlogsProps {
+  page: number;
+  pageSize?: number;
+}
+
+const fetchBlogs = async ({ page, pageSize = 10 }: FetchBlogsProps): Promise<BlogResponse> => {
+  try {
+    const response = await fetch(`/api/blogs?page=${page}&pageSize=${pageSize}`);
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    return await response.json();
+  } catch (error) {
+    throw new Error('Failed to fetch blogs');
+  }
+};
 
 export function MediumClone() {
-  const [selectedTags, setSelectedTags] = useState<string[]>([])
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);
+  const [blogs, setBlogs] = useState<Blog[]>([]);
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const loader = useRef(null);
+  const router = useRouter();
+
+  const loadBlogs = async () => {
+    try {
+      setIsLoading(true);
+      setError(null);
+      const response = await fetchBlogs({ page });
+
+      setBlogs((prevBlogs) => [...prevBlogs, ...response.blogs]);
+      setHasMore(response.hasMore);
+      setPage((prevPage) => prevPage + 1);
+    } catch (err) {
+      setError('Failed to load blogs. Please try again later.');
+      console.error('Error loading blogs:', err);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleObserver = useCallback(
+    (entries: IntersectionObserverEntry[]) => {
+      const target = entries[0];
+      if (target.isIntersecting && hasMore && !isLoading) {
+        loadBlogs();
+      }
+    },
+    [hasMore, isLoading]
+  );
+
+  useEffect(() => {
+    const option = {
+      root: null,
+      rootMargin: '20px',
+      threshold: 0,
+    };
+    const observer = new IntersectionObserver(handleObserver, option);
+
+    if (loader.current) observer.observe(loader.current);
+
+    return () => observer.disconnect();
+  }, [handleObserver]);
+
+  useEffect(() => {
+    loadBlogs();
+  }, []);
 
   const toggleTag = (tag: string) => {
-    setSelectedTags(prev => 
-      prev.includes(tag) ? prev.filter(t => t !== tag) : [...prev, tag]
-    )
+    setSelectedTags((prev) =>
+      prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag]
+    );
+  };
+
+  const filteredBlogs = selectedTags.length > 0
+    ? blogs.filter((blog) => selectedTags.includes(blog.category))
+    : blogs;
+
+  if (!blogs.length && isLoading) {
+    return (
+      <div className="flex justify-center items-center min-h-[500px]">
+        <Loader2 className="h-8 w-8 animate-spin" />
+      </div>
+    );
   }
 
-  const topics = ['Programming', 'Data Science', 'Technology', 'Self Improvement', 'Writing', 'Relationships', 'Machine Learning', 'Productivity']
-
-  const articles = [
-    { title: "The Future of AI in Everyday Life", excerpt: "Artificial Intelligence is rapidly evolving and integrating into our daily routines. From smart homes to personalized recommendations, AI is shaping the way we live and interact with technology...", author: "John Doe", date: "May 15", readTime: "5 min read", category: "Technology" },
-    { title: "10 Tips for Effective Time Management", excerpt: "Time management is crucial for productivity and success. In this article, we explore ten proven strategies to help you make the most of your time and achieve your goals...", author: "Jane Smith", date: "May 14", readTime: "7 min read", category: "Productivity" },
-    { title: "The Rise of Sustainable Technology", excerpt: "As climate change concerns grow, tech companies are focusing on developing eco-friendly solutions. This article examines the latest trends in sustainable technology and their impact on our environment...", author: "Alex Johnson", date: "May 13", readTime: "6 min read", category: "Technology" },
-    { title: "Mastering the Art of Public Speaking", excerpt: "Public speaking is a valuable skill in both personal and professional life. Learn how to overcome stage fright, structure your presentations, and captivate your audience with these expert tips...", author: "Emily Brown", date: "May 12", readTime: "8 min read", category: "Self Improvement" },
-    { title: "The Impact of Machine Learning on Healthcare", excerpt: "Machine learning is revolutionizing the healthcare industry. From diagnosis to treatment planning, discover how AI is improving patient care and medical research...", author: "Dr. Michael Lee", date: "May 11", readTime: "10 min read", category: "Machine Learning" },
-  ]
-
-  const filteredArticles = selectedTags.length > 0
-    ? articles.filter(article => selectedTags.includes(article.category))
-    : articles
+  if (error && !blogs.length) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-[500px] space-y-4">
+        <p className="text-red-500">{error}</p>
+        <button
+          onClick={() => {
+            setPage(1);
+            setBlogs([]);
+            loadBlogs();
+          }}
+          className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors"
+        >
+          Try Again
+        </button>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-white">
-      <header className="border-b sticky top-0 bg-white z-10">
-        <div className="container mx-auto flex items-center justify-between px-4 py-2">
-          <div className="flex items-center space-x-4">
-            <svg viewBox="0 0 1043.63 592.71" className="h-10 w-auto">
-              <g data-name="Layer 2">
-                <g data-name="Layer 1">
-                  <path d="M588.67 296.36c0 163.67-131.78 296.35-294.33 296.35S0 460 0 296.36 131.78 0 294.34 0s294.33 132.69 294.33 296.36M911.56 296.36c0 154.06-65.89 279-147.17 279s-147.17-124.94-147.17-279 65.88-279 147.16-279 147.17 124.9 147.17 279M1043.63 296.36c0 138-23.17 249.94-51.76 249.94s-51.75-111.91-51.75-249.94 23.17-249.94 51.75-249.94 51.76 111.9 51.76 249.94" />
-                </g>
-              </g>
-            </svg>
-          </div>
-        </div>
-      </header>
-
       <main className="container mx-auto px-4 py-8">
         <div className="flex flex-col lg:flex-row lg:space-x-12">
           <div className="lg:w-2/3">
-            <h1 className="text-5xl font-bold mb-8">Medium</h1>
+            <h1 className="text-5xl font-bold mb-8">Blogs</h1>
+
             <div className="space-y-8">
-              {filteredArticles.map((article, index) => (
-                <div key={index}>
-                  <article className="flex space-x-4">
+              {filteredBlogs.map((blog) => (
+                <div key={blog.id}>
+                  <article className="flex space-x-4 group">
+                    {blog.images && blog.images[0] && (
+                      <div className="hidden md:block flex-shrink-0 w-48 h-32 relative overflow-hidden rounded-lg">
+                        <img
+                          src={blog.images[0]}
+                          alt=""
+                          className="object-cover w-full h-full"
+                        />
+                      </div>
+                    )}
                     <div className="flex-grow">
                       <div className="flex items-center space-x-2 mb-2">
-                        <img
-                          alt="Author avatar"
-                          className="h-6 w-6 rounded-full"
-                          src={`/placeholder.svg?height=24&width=24`}
-                        />
-                        <span className="text-sm font-medium">{article.author}</span>
+                        <span className="text-sm font-medium">{blog.author}</span>
                       </div>
-                      <h2 className="text-xl font-bold mb-2">{article.title}</h2>
-                      <p className="text-gray-600 mb-2 line-clamp-2">{article.excerpt}</p>
-                      <div className="flex items-center text-sm text-gray-500">
-                        <span>{article.date}</span>
-                        <span className="mx-1">·</span>
-                        <span>{article.readTime}</span>
-                        <span className="mx-1">·</span>
-                        <span>{article.category}</span>
+                      <h2
+                        className="text-xl font-bold mb-2 cursor-pointer text-gray-900 group-hover:text-blue-600 transition-colors"
+                        onClick={() => router.push(`/blogs/${blog.id}`)}
+                      >
+                        {blog.title}
+                      </h2>
+                      <p className="text-gray-600 mb-2 line-clamp-2">
+                        {blog.excerpt}
+                      </p>
+                      <div className="flex items-center text-sm text-gray-500 space-x-1">
+                        <span>{new Date(blog.date).toLocaleDateString()}</span>
+                        <span>·</span>
+                        <span>{blog.readTime}</span>
+                        <span>·</span>
+                        <span
+                          className="cursor-pointer hover:text-blue-600"
+                          onClick={() => toggleTag(blog.category)}
+                        >
+                          {blog.category}
+                        </span>
                       </div>
                     </div>
-                    <img
-                      alt={`Article ${index + 1} image`}
-                      className="h-32 w-32 object-cover"
-                      src={`/placeholder.svg?height=128&width=128`}
-                    />
                   </article>
-                  {index < filteredArticles.length - 1 && <hr className="my-8" />}
+                  <hr className="my-8" />
                 </div>
               ))}
             </div>
-          </div>
-          <aside className="lg:w-1/3 mt-8 lg:mt-0">
-            <div className="sticky top-20">
-              <h2 className="text-sm font-bold uppercase text-gray-700 mb-4">Discover more of what matters to you</h2>
-              <div className="flex flex-wrap gap-2 mb-6">
-                {topics.map((topic) => (
-                  <Button
-                    key={topic}
-                    variant={selectedTags.includes(topic) ? "default" : "outline"}
-                    className="rounded-full text-sm"
-                    onClick={() => toggleTag(topic)}
-                  >
-                    {topic}
-                  </Button>
-                ))}
-              </div>
-              <hr className="my-8" />
-              <nav>
-                <ul className="flex flex-wrap gap-x-6 gap-y-2 text-sm">
-                  <li><a href="#" className="text-gray-500 hover:text-gray-900">Help</a></li>
-                  <li><a href="#" className="text-gray-500 hover:text-gray-900">Status</a></li>
-                  <li><a href="#" className="text-gray-500 hover:text-gray-900">Writers</a></li>
-                  <li><a href="#" className="text-gray-500 hover:text-gray-900">Blog</a></li>
-                  <li><a href="#" className="text-gray-500 hover:text-gray-900">Careers</a></li>
-                  <li><a href="#" className="text-gray-500 hover:text-gray-900">Privacy</a></li>
-                  <li><a href="#" className="text-gray-500 hover:text-gray-900">Terms</a></li>
-                  <li><a href="#" className="text-gray-500 hover:text-gray-900">About</a></li>
-                </ul>
-              </nav>
+
+            <div ref={loader} className="my-8 flex justify-center">
+              {isLoading && <Loader2 className="h-6 w-6 animate-spin text-gray-400" />}
             </div>
-          </aside>
+
+            {!hasMore && blogs.length > 0 && (
+              <p className="text-center text-gray-500 my-8">No more blogs to load</p>
+            )}
+
+            {!isLoading && blogs.length === 0 && (
+              <div className="text-center py-12">
+                <p className="text-gray-500">No blogs found</p>
+              </div>
+            )}
+          </div>
         </div>
       </main>
     </div>
-  )
+  );
 }
+
+export default MediumClone;

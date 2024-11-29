@@ -21,6 +21,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/utils/ThemeProvider.js", "src/app/api/razorpay/route.js"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/utils/ThemeProvider.js", "src/app/api/razorpay/route.js", "src/app/api/blogs/route.js", "src/app/api/articles/route.js"],
   "exclude": ["node_modules"]
 }
