@@ -1,14 +1,17 @@
-// app/api/blogs/route.ts
-import { NextResponse } from "next/server";
-import { MongoClient, ObjectId } from "mongodb";
+const { NextResponse } = require("next/server");
+const { MongoClient, ObjectId } = require("mongodb");
 
+// Caching the database client
 let cachedClient = null;
 
 async function connectToDatabase() {
   if (cachedClient) {
     return cachedClient;
   }
-  const client = await MongoClient.connect(process.env.MONGO_URI2);
+  const client = await MongoClient.connect(process.env.MONGO_URI2, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  });
   cachedClient = client;
   return client;
 }
@@ -21,7 +24,7 @@ export async function POST(req) {
 
     const formData = await req.formData();
 
-    // Extract fields
+    // Extract fields from form data
     const title = formData.get("title");
     const subtitle = formData.get("subtitle");
     const content = formData.get("content");
@@ -32,16 +35,16 @@ export async function POST(req) {
     // Validate required fields
     if (!title || !subtitle || !content || !authorName || !date || !category) {
       return NextResponse.json(
-        { message: "Title, subtitle, content, author, date, and category are required" },
+        { message: "All fields are required: title, subtitle, content, author, date, category" },
         { status: 400 }
       );
     }
 
     // Process images
     const images = [];
-    for (let pair of formData.entries()) {
-      if (pair[0].startsWith("image")) {
-        const file = pair[1];
+    for (const [key, value] of formData.entries()) {
+      if (key.startsWith("image")) {
+        const file = value;
         const buffer = await file.arrayBuffer();
         const base64 = Buffer.from(buffer).toString("base64");
         images.push({
@@ -59,11 +62,7 @@ export async function POST(req) {
       content,
       category,
       date: new Date(date),
-      author: {
-        name: authorName,
-        image: "",
-        bio: "",
-      },
+      author: { name: authorName, image: "", bio: "" },
       images,
       createdAt: new Date(),
       updatedAt: new Date(),
@@ -77,7 +76,7 @@ export async function POST(req) {
     }
 
     return NextResponse.json(
-      { message: "Blog Saved", id: result.insertedId },
+      { message: "Blog Saved Successfully", id: result.insertedId },
       { status: 201 }
     );
   } catch (error) {
@@ -97,10 +96,10 @@ export async function GET(req) {
 
     const url = new URL(req.url);
     const id = url.searchParams.get("id");
-    const page = parseInt(url.searchParams.get("page") || "1", 10);
-    const limit = parseInt(url.searchParams.get("limit") || "10", 10);
+    const page = Math.max(parseInt(url.searchParams.get("page") || "1", 10), 1);
+    const limit = Math.max(parseInt(url.searchParams.get("limit") || "10", 10), 1);
     const skip = (page - 1) * limit;
-    const category = url.searchParams.get("category"); // Optional category filter
+    const category = url.searchParams.get("category");
 
     if (id) {
       // Fetch a single blog post by ID
@@ -110,7 +109,7 @@ export async function GET(req) {
       }
       return NextResponse.json(blog);
     } else {
-      // Fetch all blog posts, optionally filtered by category
+      // Fetch all blog posts with optional category filter
       const query = category ? { category } : {};
       const blogs = await db
         .collection("blogposts")
@@ -120,10 +119,14 @@ export async function GET(req) {
         .limit(limit)
         .toArray();
       const total = await db.collection("blogposts").countDocuments(query);
+
       return NextResponse.json({ blogs, total, page, limit });
     }
   } catch (error) {
     console.error("Error in GET /api/blogs:", error);
-    return NextResponse.json({ message: "Internal Server Error" }, { status: 500 });
+    return NextResponse.json(
+      { message: "Internal Server Error" },
+      { status: 500 }
+    );
   }
 }
