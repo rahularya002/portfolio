@@ -1,14 +1,17 @@
 "use client";
+
 import React, { useState } from "react";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import { cn } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
 import Link from "next/link";
+import { Loader2 } from 'lucide-react';
 
 interface FormData {
   firstname: string;
   lastname: string;
+  phoneNumber: string;
   email: string;
   password: string;
 }
@@ -54,23 +57,59 @@ export default function SignupFormDemo() {
   const [formData, setFormData] = useState<FormData>({
     firstname: "",
     lastname: "",
+    phoneNumber: "",
     email: "",
     password: "",
   });
 
   const [registrationSuccess, setRegistrationSuccess] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const { toast } = useToast();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [id]: value,
-    }));
+    
+    // Special handling for phone number to ensure only digits
+    if (id === 'phoneNumber') {
+      // Remove any non-digit characters
+      const sanitizedValue = value.replace(/\D/g, '');
+      
+      // Limit to 10 digits for Indian phone numbers
+      const truncatedValue = sanitizedValue.slice(0, 10);
+      
+      setFormData((prevData) => ({
+        ...prevData,
+        [id]: truncatedValue,
+      }));
+    } else {
+      setFormData((prevData) => ({
+        ...prevData,
+        [id]: value,
+      }));
+    }
+  };
+
+  // Validation function for phone number
+  const isValidPhoneNumber = (phoneNumber: string) => {
+    // Indian phone number validation: 10 digits starting with 6, 7, 8, or 9
+    const phoneRegex = /^[6-9]\d{9}$/;
+    return phoneRegex.test(phoneNumber);
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setIsLoading(true);
+
+    // Phone number validation before submission
+    if (!isValidPhoneNumber(formData.phoneNumber)) {
+      toast({
+        title: "Invalid Phone Number",
+        description: "Please enter a valid 10-digit Indian mobile number",
+        variant: "destructive",
+      });
+      setIsLoading(false);
+      return;
+    }
 
     try {
       const response = await fetch("/api/signup", {
@@ -98,10 +137,13 @@ export default function SignupFormDemo() {
         description: (error as Error).message || "Registration failed",
         variant: "destructive",
       });
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const handlePayment = async () => {
+    setIsLoading(true);
     try {
       // Use test amount of ₹10 instead of ₹199
       const testAmount = 10;
@@ -184,6 +226,8 @@ export default function SignupFormDemo() {
         description: (error as Error).message || "Payment initiation failed",
         variant: "destructive",
       });
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -233,6 +277,22 @@ export default function SignupFormDemo() {
         </div>
 
         <LabelInputContainer className="mb-4">
+          <Label htmlFor="phoneNumber">Phone Number</Label>
+          <Input
+            id="phoneNumber"
+            placeholder="Enter 10-digit mobile number"
+            type="tel"
+            value={formData.phoneNumber}
+            onChange={handleChange}
+            required
+            pattern="[6-9]\d{9}"
+            maxLength={10}
+            title="10-digit mobile number starting with 6, 7, 8, or 9"
+          />
+          
+        </LabelInputContainer>
+
+        <LabelInputContainer className="mb-4">
           <Label htmlFor="email">Email Address</Label>
           <Input
             id="email"
@@ -259,18 +319,26 @@ export default function SignupFormDemo() {
 
         {!registrationSuccess ? (
           <button
-            className="bg-gradient-to-br from-black to-neutral-600 dark:from-zinc-900 dark:to-zinc-900 dark:border-white dark:border w-full text-white rounded-md h-10 font-medium"
+            className="bg-gradient-to-br from-black to-neutral-600 dark:from-zinc-900 dark:to-zinc-900 dark:border-white dark:border w-full text-white rounded-md h-10 font-medium flex items-center justify-center"
             type="submit"
+            disabled={isLoading}
           >
-            Register Now
+            {isLoading ? (
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+            ) : null}
+            {isLoading ? "Processing..." : "Register Now"}
           </button>
         ) : (
           <button
             type="button"
             onClick={handlePayment}
-            className="bg-gradient-to-br from-green-500 to-green-700 text-white w-full rounded-md h-10 font-medium"
+            className="bg-gradient-to-br from-green-500 to-green-700 text-white w-full rounded-md h-10 font-medium flex items-center justify-center"
+            disabled={isLoading}
           >
-            Pay ₹10 (Test)
+            {isLoading ? (
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+            ) : null}
+            {isLoading ? "Processing..." : "Pay ₹199"}
           </button>
         )}
       </form>

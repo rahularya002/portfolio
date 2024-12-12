@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import Image from "next/legacy/image";
-import { InfoIcon, ClipboardIcon, BriefcaseIcon, MailIcon, MessageSquareIcon, BookType } from "lucide-react";
+import { InfoIcon, ClipboardIcon, BriefcaseIcon, MailIcon, MessageSquareIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import {
@@ -109,7 +109,7 @@ export function DockDemo() {
               </TooltipContent>
             </Tooltip>
           </DockIcon>
-          <DockIcon>
+          {/* <DockIcon>
             <Tooltip>
               <TooltipTrigger asChild>
                 <Link href="/blogs">
@@ -126,7 +126,7 @@ export function DockDemo() {
                 <p>Blogs</p>
               </TooltipContent>
             </Tooltip>
-          </DockIcon>
+          </DockIcon> */}
         </Dock>
       </TooltipProvider>
     </div>
