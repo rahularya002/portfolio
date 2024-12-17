@@ -68,7 +68,7 @@ export function LayoutGridDemo() {
           </div>
         </div>
       ),
-      className: "col-span-1 rounded-xl min-h-[350px]",
+      className: "col-span-1 rounded-xl min-h-[350px] pointer-event-none",
       background: (
         <div className="absolute inset-0 z-0 bg-white">
           <AnimatedListDemo className="h-full w-full border-none transition-all duration-300 ease-out [mask-image:linear-gradient(to_top,transparent_10%,#000_100%)] group-hover:scale-105" />
@@ -90,7 +90,7 @@ export function LayoutGridDemo() {
           </div>
         </div>
       ),
-      className: "col-span-1 rounded-xl min-h-[350px]",
+      className: "col-span-1 rounded-xl min-h-[350px] pointer-events-none",
       background: (
         <div className="absolute inset-0 z-0 flex items-center justify-center bg-white">
           <Ripple className="absolute inset-0 h-full w-full border-none transition-all duration-300 ease-out [mask-image:linear-gradient(to_top,transparent_10%,#000_100%)] group-hover:scale-105" />

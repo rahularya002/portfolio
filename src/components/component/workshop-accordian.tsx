@@ -16,7 +16,7 @@ function WorkshopAccordion() {
   ];
 
   const accordionItems = [
-    { title: "Introduction to AI and MD Infosystems (MDI)", content: "Learn the basics of Artificial Intelligence and how MD Infosystems is at the forefront of AI development." },
+    { title: "Introduction to AI ", content: "Learn the basics of Artificial Intelligence" },
     { title: "What is AGI (Artificial General Intelligence)?", content: "Discover the future of AI beyond narrow applications—Artificial General Intelligence—and the ethical implications of its development." },
     { title: "ChatGPT: Revolutionizing Communication", content: "Explore how ChatGPT is transforming customer service, content creation, and automated assistance." },
     { title: "Exploring AI Models: Gemini, Claude etc.", content: "Learn the differences between leading AI models and how each one is specialized for different tasks." },

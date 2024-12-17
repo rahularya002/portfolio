@@ -58,31 +58,31 @@ export default function Component() {
                 <AccordionItem value="item-1">
                   <AccordionTrigger>How do I access the workshop materials?</AccordionTrigger>
                   <AccordionContent>
-                    All the workshop material will be sent to you via Email as PDF.
+                    Workshop materials will not be provided separately, as the sessions are designed to be interactive and self-contained.
                   </AccordionContent>
                 </AccordionItem>
                 <AccordionItem value="item-2">
                   <AccordionTrigger>What if I miss a live session?</AccordionTrigger>
                   <AccordionContent>
-                    There wont be any recordings provided to if you miss the live session. we will be reminding you for the workshop via email before the prior date, although the notes will still be there
+                    Live sessions are not recorded, so we recommend attending them to get the full experience.
                   </AccordionContent>
                 </AccordionItem>
                 <AccordionItem value="item-3">
                   <AccordionTrigger>Is there a refund policy?</AccordionTrigger>
                   <AccordionContent>
-                    Yes, we offer a 24 hours moneyback gurantee before the workshop in case you are unable to attend the workshop.
+                    Yes, we offer a refund policy. Refunds are typically available if requested at least 24 hours before the workshop starts. Please refer to our terms and conditions for details.
                   </AccordionContent>
                 </AccordionItem>
                 <AccordionItem value="item-4">
                   <AccordionTrigger>Can I get a certificate after completing the workshop?</AccordionTrigger>
                   <AccordionContent>
-                    Upon successful completion of the workshop, you'll receive a digital certificate of completion.
+                  Yes, you will receive a digital certificate upon successful completion of the workshop.
                   </AccordionContent>
                 </AccordionItem>
                 <AccordionItem value="item-5">
                   <AccordionTrigger>Are there any prerequisites for the workshop?</AccordionTrigger>
                   <AccordionContent>
-                    While there are no strict prerequisites, basic programming knowledge is recommended. We'll provide resources for beginners to catch up if needed.
+                   No specific prerequisites are required. Just bring your enthusiasm to learn!
                   </AccordionContent>
                 </AccordionItem>
               </Accordion>

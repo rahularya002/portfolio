@@ -9,10 +9,10 @@ const WorkshopPricing = () => {
   const [isHovered, setIsHovered] = useState(false);
 
   const workshopFeatures = [
-    'Comprehensive 2-day intensive training',
+    'Comprehensive 3-hour intensive training',
     'Hands-on exercises with real-world projects',
-    'Live Q&A sessions with industry experts',
-    '60-day access to all workshop materials',
+    'Live Q&A sessions with Mentors',
+    'All attendees receive a project topic to complete and submit within 5 days.',
     'Certificate of completion',
   ];
 
