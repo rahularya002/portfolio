@@ -13,7 +13,7 @@ interface Item {
 
 let notifications = [
   {
-    name: "Payment received",
+    name: "Business Presentation",
     description: "MD Infosystem",
     time: "15m ago",
 
@@ -21,21 +21,63 @@ let notifications = [
     color: "#00C9A7",
   },
   {
-    name: "User signed up",
+    name: "Motion Graphics Animation",
     description: "MD Infosystem",
     time: "10m ago",
     icon: "👤",
     color: "#FFB800",
   },
   {
-    name: "New message",
+    name: "3D Animation",
     description: "MD Infosystem",
     time: "5m ago",
     icon: "💬",
     color: "#FF3D71",
   },
   {
-    name: "New event",
+    name: "3D Logo Reveals",
+    description: "MD Infosystem",
+    time: "2m ago",
+    icon: "🎞️",
+    color: "#1E86FF",
+  },
+  {
+    name: "Typography ",
+    description: "MD Infosystem",
+    time: "2m ago",
+    icon: "🗞️",
+    color: "#1E86FF",
+  },
+  {
+    name: "Explainer Animation",
+    description: "MD Infosystem",
+    time: "2m ago",
+    icon: "🗞️",
+    color: "#1E86FF",
+  },
+  {
+    name: "Invitation Videos",
+    description: "MD Infosystem",
+    time: "2m ago",
+    icon: "🗞️",
+    color: "#1E86FF",
+  },
+  {
+    name: "Slideshow",
+    description: "MD Infosystem",
+    time: "2m ago",
+    icon: "🗞️",
+    color: "#1E86FF",
+  },
+  {
+    name: "White Board Animation",
+    description: "MD Infosystem",
+    time: "2m ago",
+    icon: "🗞️",
+    color: "#1E86FF",
+  },
+  {
+    name: "Music Visualization",
     description: "MD Infosystem",
     time: "2m ago",
     icon: "🗞️",

@@ -1,4 +1,4 @@
-// app/api/posts/route.ts (for getting all posts)
+  // app/api/posts/route.ts (for getting all posts)
 import { NextResponse } from 'next/server'
 import { MongoClient } from 'mongodb'
 
