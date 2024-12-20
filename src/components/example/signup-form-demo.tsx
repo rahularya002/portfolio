@@ -64,6 +64,7 @@ export default function SignupFormDemo() {
 
   const [registrationSuccess, setRegistrationSuccess] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [paymentInProgress, setPaymentInProgress] = useState<boolean>(false); // Added state for payment status
   const { toast } = useToast();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -143,31 +144,33 @@ export default function SignupFormDemo() {
   };
 
   const handlePayment = async () => {
+    setPaymentInProgress(true); // Disable the button once clicked
     setIsLoading(true);
+
     try {
       // Use test amount of ₹10 instead of ₹199
       const testAmount = 10;
-      
+
       const response = await fetch("/api/razorpay", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           amount: testAmount,
           email: formData.email,
-          name: `${formData.firstname} ${formData.lastname}`
+          name: `${formData.firstname} ${formData.lastname}`,
         }),
       });
 
       const data = await response.json();
-      
+
       if (!response.ok) throw new Error(data.message);
 
       const options: RazorpayOptions = {
         key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID!,
         amount: testAmount * 100, // Amount in paise (₹10)
         currency: "INR",
-        name: "Workshop Registration (Test)",
-        description: "Workshop Registration Fee (Test Payment)",
+        name: "Workshop Registration ",
+        description: "Workshop Registration Fee ",
         order_id: data.id,
         handler: async (response: RazorpayResponse) => {
           try {
@@ -186,6 +189,15 @@ export default function SignupFormDemo() {
                 description: "Your test payment is complete!",
                 variant: "default",
               });
+              // Reset form and show registration success message
+              setFormData({
+                firstname: "",
+                lastname: "",
+                phoneNumber: "",
+                email: "",
+                password: "",
+              });
+              setRegistrationSuccess(false); // Reset registration success flag
               // Redirect to success page or dashboard
               window.location.href = "/workshop/success";
             }
@@ -333,7 +345,7 @@ export default function SignupFormDemo() {
             type="button"
             onClick={handlePayment}
             className="bg-gradient-to-br from-green-500 to-green-700 text-white w-full rounded-md h-10 font-medium flex items-center justify-center"
-            disabled={isLoading}
+            disabled={isLoading || paymentInProgress} // Disable button if payment is in progress
           >
             {isLoading ? (
               <Loader2 className="mr-2 h-4 w-4 animate-spin" />
