@@ -1,5 +1,4 @@
 "use client";
-import Link from "next/link";
 import React from "react";
 import ShimmerButton from "./magicui/shimmer-button";
 import Meteors from "./magicui/meteors";

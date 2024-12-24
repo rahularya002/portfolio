@@ -19,10 +19,10 @@ export default function Projects() {
               <div className="inline-block rounded-lg bg-muted px-3 py-1 text-sm">Our Work</div>
            
             
-              <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">Showcasing Our Expertise</h2>
+              <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl dark:text-black">Showcasing Our Expertise</h2>
           
             
-              <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
+              <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed dark:text-black-300">
                 Check out some of our recent projects and see how we've helped our clients succeed.
               </p>
            
@@ -34,25 +34,25 @@ export default function Projects() {
           </div>
           <div className="flex flex-col justify-center space-y-6 py-6 m-8">
             <div className="grid gap-1">
-              <h3 className="text-xl font-bold">E-commerce</h3>
+              <h3 className="text-xl font-bold dark:text-black">E-commerce</h3>
               <p className="text-muted-foreground">
                 Designed and developed a modern e-commerce platform for a leading retail brand.
               </p>
             </div>
             <div className="grid gap-1">
-              <h3 className="text-xl font-bold">Mobile App</h3>
+              <h3 className="text-xl font-bold dark:text-black">Mobile App</h3>
               <p className="text-muted-foreground">
                 Crafted a user-friendly mobile app for a leading healthcare provider.
               </p>
             </div>
             <div className="grid gap-1">
-              <h3 className="text-xl font-bold">Web Apps</h3>
+              <h3 className="text-xl font-bold dark:text-black">Web Apps</h3>
               <p className="text-muted-foreground">
                 Crafted a user-friendly Web app for a leading healthcare provider.
               </p>
             </div>
             <div className="grid gap-1">
-              <h3 className="text-xl font-bold">Digital Marketing</h3>
+              <h3 className="text-xl font-bold dark:text-black">Digital Marketing</h3>
               <p className="text-muted-foreground">
                 Crafted a user-friendly Web app for a leading healthcare provider.
               </p>

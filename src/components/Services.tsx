@@ -4,7 +4,6 @@ import Link from "next/link";
 import Image from "next/legacy/image";
 import AnimatedShinyText from "./magicui/animated-shiny-text";
 import ShinyButton from "./magicui/shiny-button";
-import BoxReveal from "./magicui/box-reveal";
 import { LayoutGridDemo } from "./layout-grid-demo";
 
 export default function Services() {
@@ -22,21 +21,22 @@ export default function Services() {
   return (
     <section
       id="services"
-      className="w-full min-h-screen flex items-center justify-center bg-muted py-6"
+      className="w-full min-h-screen flex items-center justify-center bg-muted py-6 dark:bg-gray-900 transition-colors duration-200"
       style={{
-        background:
-          "linear-gradient(180deg, rgba(226, 215, 216) 0%, rgba(241, 245, 249, 1) 100%)",
+        background: "var(--gradient-background)",
+        ["--gradient-background" as string]: "linear-gradient(180deg, rgba(226, 215, 216) 0%, rgba(241, 245, 249, 1) 100%)",
+        ["--gradient-background-dark" as string]: "linear-gradient(180deg, rgba(17, 24, 39, 1) 0%, rgba(31, 41, 55, 1) 100%)"
       }}
     >
       <div className="container relative px-4 md:px-6 z-10">
         <div className="flex flex-col items-center justify-center space-y-4 text-center">
-          <AnimatedShinyText className="inline-flex items-center justify-center px-4 py-1 transition ease-out rounded-sm hover:text-neutral-600 hover:duration-300 hover:dark:text-neutral-400">
+          <AnimatedShinyText className="inline-flex items-center justify-center px-4 py-1 transition ease-out rounded-sm hover:text-neutral-600 dark:hover:text-neutral-400">
             <span>✨ Our Services</span>
           </AnimatedShinyText>
-          <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl text-center mx-auto">
+          <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl text-center mx-auto dark:text-black">
             Elevating Your Digital Presence
           </h2>
-          <p className="max-w-[900px] text-muted-foreground text-base sm:text-lg md:text-xl lg:text-lg xl:text-xl mx-auto">
+          <p className="max-w-[900px] text-muted-foreground dark:text-black-300 text-base sm:text-lg md:text-xl lg:text-lg xl:text-xl mx-auto">
             From web development to mobile apps, UX/UI design, ad films with AI,
             short movie production, and digital marketing, we've got you
             covered.
@@ -78,17 +78,17 @@ function ServiceCard({
       </div>
       <div className="grid gap-1">
         {icon}
-        <h3 className="text-xl font-bold">{title}</h3>
-        <p className="text-muted-foreground text-base sm:text-lg">
+        <h3 className="text-xl font-bold dark:text-white">{title}</h3>
+        <p className="text-muted-foreground dark:text-gray-300 text-base sm:text-lg">
           {description}
         </p>
         <ShinyButton
           text="Learn More"
-          className="bg-transparent border border-primary text-primary"
+          className="bg-transparent border border-primary text-primary dark:border-gray-300 dark:text-gray-300"
         >
           <Link
             href="#"
-            className="inline-flex h-8 items-center justify-center rounded-md px-4 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
+            className="inline-flex h-8 items-center justify-center rounded-md px-4 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 dark:hover:text-white"
             prefetch={false}
           >
             Learn More

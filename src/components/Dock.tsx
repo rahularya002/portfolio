@@ -69,7 +69,7 @@ export function DockDemo() {
       <TooltipProvider>
         <Dock
           direction="middle"
-          className="fixed bottom-4 left-1/2 transform -translate-x-1/2 z-20 bg-white"
+          className="fixed bottom-4 left-1/2 transform -translate-x-1/2 z-20 bg-white dark:bg-black"
         >
           {DATA.navbar.map((item) => (
             <DockIcon key={item.label}>

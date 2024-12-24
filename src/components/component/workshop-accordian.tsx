@@ -20,7 +20,6 @@ function WorkshopAccordion() {
     { title: "What is AGI (Artificial General Intelligence)?", content: "Discover the future of AI beyond narrow applications—Artificial General Intelligence—and the ethical implications of its development." },
     { title: "ChatGPT: Revolutionizing Communication", content: "Explore how ChatGPT is transforming customer service, content creation, and automated assistance." },
     { title: "Exploring AI Models: Gemini, Claude etc.", content: "Learn the differences between leading AI models and how each one is specialized for different tasks." },
-    { title: "Suno Music: Create Your Own Song with AI", content: "Get hands-on with Suno Music, an AI tool that helps you compose original music in minutes." },
     { title: "AI-Generated Movies: The Future of Filmmaking", content: "Dive into the world of AI-driven content creation and learn how movies can be generated using AI." },
     { title: "AI in Commercial Video Creation", content: "Discover how AI can help you quickly generate high-quality commercial videos for marketing campaigns." },
     { title: "Bonus Content: Exclusive AI Tools & Resources", content: "As a special bonus, we'll share an exclusive AI tool or resource to give your projects an extra edge." },

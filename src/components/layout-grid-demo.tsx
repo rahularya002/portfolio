@@ -5,7 +5,7 @@ import dynamic from 'next/dynamic';
 import { GlobeIcon } from "@radix-ui/react-icons";
 import { CiMobile3 } from "react-icons/ci";
 import { SiReact } from "react-icons/si";
-import { TrendingUp, Clapperboard } from "lucide-react";
+import { TrendingUp, Clapperboard, Film } from "lucide-react";
 import { useInView } from "react-intersection-observer";
 
 const AnimatedBeamMultipleOutputDemo = dynamic(() => import("@/components/magicui/animated-beam-multiple-outputs"), { ssr: false });
@@ -59,11 +59,11 @@ export function LayoutGridDemo() {
         <div className="flex flex-col justify-end h-full w-full p-4 relative z-10">
           <div className="flex items-start">
             <div className="w-12 h-12 mr-4 flex-shrink-0">
-              <CiMobile3 className="w-full h-full text-black" />
+              <Film className="w-full h-full text-black" />
             </div>
             <div>
-              <p className="font-bold text-lg text-black font-montserrat">Mobile App Development</p>
-              <p className="font-normal text-sm text-black">We develop mobile apps for your brand.</p>
+              <p className="font-bold text-lg text-black font-montserrat">MotionCraft Studios</p>
+              <p className="font-normal text-sm text-black">We create animations worth</p>
             </div>
           </div>
         </div>
@@ -107,8 +107,8 @@ export function LayoutGridDemo() {
               <Clapperboard className="w-full h-full text-black" />
             </div>
             <div>
-              <p className="font-bold text-lg text-black font-montserrat">Media Production</p>
-              <p className="font-normal text-sm text-black">We help you produce short films and commercials with the help of AI.</p>
+              <p className="font-bold text-lg text-black font-montserrat">Revolutionizing TVCs with AI</p>
+              <p className="font-normal text-sm text-black">Crafting Impactful and Engaging Television Commercials for Modern Brands.</p>
             </div>
           </div>
         </div>

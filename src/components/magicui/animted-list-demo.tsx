@@ -8,80 +8,69 @@ interface Item {
   description: string;
   icon: string;
   color: string;
-  time: string;
+  time?: string;
 }
 
 let notifications = [
   {
     name: "Business Presentation",
-    description: "MD Infosystem",
-    time: "15m ago",
-
-    icon: "💸",
-    color: "#00C9A7",
+    description: "Transforming data into visually engaging narratives for impactful presentations.",
+    icon: "🎨",
+    color: "#FF6B6B",
   },
   {
     name: "Motion Graphics Animation",
-    description: "MD Infosystem",
-    time: "10m ago",
-    icon: "👤",
-    color: "#FFB800",
+    description: "Bringing your ideas to life with captivating animations.",
+    icon: "✨",
+    color: "#4ECDC4",
   },
   {
     name: "3D Animation",
-    description: "MD Infosystem",
-    time: "5m ago",
-    icon: "💬",
-    color: "#FF3D71",
+    description: "Adding depth to your brand with stunning 3D visuals and animations.",
+    icon: "🎬",
+    color: "#45B7D1",
   },
   {
     name: "3D Logo Reveals",
-    description: "MD Infosystem",
-    time: "2m ago",
-    icon: "🎞️",
-    color: "#1E86FF",
+    description: "Adding depth to your brand with stunning 3D visuals and animations.",
+    icon: "🎮",
+    color: "#96CEB4",
   },
   {
     name: "Typography ",
-    description: "MD Infosystem",
-    time: "2m ago",
-    icon: "🗞️",
-    color: "#1E86FF",
+    description: "Designing powerful visual text to convey messages with style and clarity.",
+    icon: "🎯",
+    color: "#FFEEAD",
   },
   {
     name: "Explainer Animation",
-    description: "MD Infosystem",
-    time: "2m ago",
-    icon: "🗞️",
-    color: "#1E86FF",
+    description: "Simplifying complex ideas with animated storytelling",
+    icon: "🎪",
+    color: "#D4A5A5",
   },
   {
     name: "Invitation Videos",
-    description: "MD Infosystem",
-    time: "2m ago",
-    icon: "🗞️",
-    color: "#1E86FF",
+    description: "Creating personalized invitations to make your events unforgettable",
+    icon: "🎭",
+    color: "#9B59B6",
   },
   {
     name: "Slideshow",
-    description: "MD Infosystem",
-    time: "2m ago",
-    icon: "🗞️",
-    color: "#1E86FF",
+    description: "Crafting seamless slideshows that capture memories and moments.",
+    icon: "🎨",
+    color: "#3498DB",
   },
   {
     name: "White Board Animation",
-    description: "MD Infosystem",
-    time: "2m ago",
-    icon: "🗞️",
-    color: "#1E86FF",
+    description: "Illustrating concepts with dynamic whiteboard storytelling.",
+    icon: "🎼",
+    color: "#E67E22",
   },
   {
     name: "Music Visualization",
-    description: "MD Infosystem",
-    time: "2m ago",
-    icon: "🗞️",
-    color: "#1E86FF",
+    description: "Turning sound into immersive visual experiences.",
+    icon: "🎵",
+    color: "#1ABC9C",
   },
 ];
 
@@ -102,7 +91,7 @@ const Notification = ({ name, description, icon, color, time }: Item) => {
     >
       <div className="flex flex-row items-center gap-3">
         <div
-          className="flex size-10 items-center justify-center rounded-2xl"
+          className="flex size-10 items-center justify-center rounded-full"
           style={{
             backgroundColor: color,
           }}
