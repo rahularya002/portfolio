@@ -16,6 +16,10 @@ bun dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
+Open [http://localhost:3000/registration](http://localhost:resgistration) with your browser to see the registrations
+
+Open [http://localhost:3000/contacts](http://localhost:contacts) with your browser to see the inqueries
+
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
 This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
