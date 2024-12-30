@@ -49,7 +49,7 @@ export async function sendWelcomeEmail(email, firstname) {
             </p>
             <div style="text-align: center; margin-top: 20px;">
               <a 
-                href="https://chat.whatsapp.com/Io2sZvQC2Pq5kLZpY8QSmm" 
+                href="https://chat.whatsapp.com/FUbOKHwiZYPIE5qv2TXKue" 
                 target="_blank" 
                 style="background-color: #25D366; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; display: inline-block; margin-bottom: 10px;"
               >
