@@ -37,10 +37,11 @@ export async function sendWelcomeEmail(email, firstname) {
               Congratulations on joining our cutting-edge AI Workshop! You're about to embark on an exciting journey into the world of artificial intelligence.
             </p>
             <div style="background-color: #E6F2FF; border-left: 4px solid #4A90E2; padding: 10px; margin: 20px 0;">
-              <h2 style="margin: 0 0 10px 0; color: #1A5F7A;">Your Next Steps</h2>
+              <h2 style="margin: 0 0 10px 0; color: #1A5F7A;">Points to Note</h2>
               <ul style="list-style-type: disc; padding-left: 20px; color: #333;">
-                <li style="margin-bottom: 5px;">Complete your profile</li>
-                <li style="margin-bottom: 5px;">Access workshop materials</li>
+              <li style="margin-bottom: 5px;">Join our community</li>
+                <li style="margin-bottom: 5px;">Workshop will be held on 26th january at 5:00 pm</li>
+                <li style="margin-bottom: 5px;">workshop link will be shared in the community</li>
                 <li style="margin-bottom: 5px;">Connect with fellow AI enthusiasts</li>
               </ul>
             </div>
@@ -61,8 +62,8 @@ export async function sendWelcomeEmail(email, firstname) {
             </div>
           </div>
           <div style="background-color: #f4f4f4; padding: 10px; text-align: center; color: #666; font-size: 12px;">
-            <p>© 2024 AI Workshop. All rights reserved.</p>
-            <p>If you have any questions, contact us at support@aiworkshop.com</p>
+            <p>© 2025 AI Workshop. All rights reserved.</p>
+            <p>If you have any questions, contact us at enbquantum@gmail.com </p>
           </div>
         </div>
       `,

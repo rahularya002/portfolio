@@ -1,10 +1,41 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import Image from "next/legacy/image";
 import Link from "next/link";
 
 const WorkshopLogin = () => {
+  const [timeLeft, setTimeLeft] = useState<string>("");
+
+  useEffect(() => {
+    const targetDate = new Date("January 26, 2025 17:00:00").getTime();
+
+    const updateTimer = () => {
+      const now = new Date().getTime();
+      const distance = targetDate - now;
+
+      if (distance <= 0) {
+        setTimeLeft("The event has started!");
+        return;
+      }
+
+      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      const hours = Math.floor(
+        (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+      );
+      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+      setTimeLeft(`${days}d ${hours}h ${minutes}m ${seconds}s`);
+    };
+
+    updateTimer(); // Run immediately on mount
+    const intervalId = setInterval(updateTimer, 1000);
+
+    return () => clearInterval(intervalId); // Cleanup on unmount
+  }, []);
+
   return (
     <div className="py-16 px-4 sm:px-6 lg:px-8">
       <h1 className="text-5xl font-bold text-center text-gray-900 dark:text-white mb-12">
@@ -34,16 +65,17 @@ const WorkshopLogin = () => {
             Immerse yourself in a transformative learning experience. Details coming soon!
           </p>
           <div className="flex justify-center md:justify-start space-x-4 mb-8">
-            <p className="text-lg text-gray-500 dark:text-gray-400">
-              To Be Announced Soon
+            <p className="text-2xl font-bold text-blue-600 dark:text-blue-400">
+              {timeLeft}
             </p>
           </div>
           <Link href="/workshop/Signup">
             <motion.button
-              disabled
-              className="bg-gray-400 text-gray-700 font-bold py-3 px-8 rounded-lg text-lg shadow-lg cursor-not-allowed dark:bg-gray-500 dark:text-gray-300"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="py-3 px-8 rounded-lg text-lg shadow-lg font-bold bg-blue-600 text-white hover:bg-blue-700 transition duration-300 dark:bg-blue-500 dark:hover:bg-blue-600"
             >
-              Coming Soon
+              Register Now
             </motion.button>
           </Link>
         </div>

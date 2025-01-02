@@ -3,8 +3,8 @@ import { NextResponse } from "next/server";
 import Razorpay from "razorpay";
 
 const razorpay = new Razorpay({
-  key_id: process.env.RAZORPAY_KEY_ID,
-  key_secret: process.env.RAZORPAY_KEY_SECRET,
+  key_id: process.env.RAZORPAY_TEST_KEY_ID,
+  key_secret: process.env.RAZORPAY_TEST_KEY_SECRET,
 });
 
 // Cached database connection
@@ -40,7 +40,7 @@ export async function POST(req) {
     // Validate the user exists and check current status
     const usersCollection = db.collection("users");
     const user = await usersCollection.findOne({ email });
-    
+   
     if (!user) {
       return NextResponse.json(
         { message: "User not found" },
@@ -51,11 +51,14 @@ export async function POST(req) {
     // Check if user has already paid
     if (user.paymentStatus === 'paid') {
       return NextResponse.json(
-        { message: "User has already completed payment" },
+        { 
+          message: "User has already completed payment",
+          redirectUrl: '/workshop'  // Add redirect URL for already paid users
+        },
         { status: 400 }
       );
     }
-    
+   
     // Use a smaller amount for testing (₹10)
     const testAmount = 199;
    
@@ -65,9 +68,9 @@ export async function POST(req) {
       receipt: `rcpt_${Date.now()}`,
       payment_capture: 1,
     };
-    
+   
     const order = await razorpay.orders.create(options);
-    
+   
     // Store the order details in Orders collection
     const ordersCollection = db.collection("orders");
     await ordersCollection.insertOne({
@@ -80,19 +83,19 @@ export async function POST(req) {
       paymentMethod,
       isTestOrder: true,
     });
-    
+   
     // Update user's payment status to 'pending'
     await usersCollection.updateOne(
       { email },
-      { 
-        $set: { 
+      {
+        $set: {
           paymentStatus: 'pending',
           paymentOrderId: order.id,
           paymentAttemptedAt: new Date()
-        } 
+        }
       }
     );
-    
+   
     // Prepare the response based on payment method
     let response = { ...order };
     if (paymentMethod === 'card') {
@@ -103,7 +106,7 @@ export async function POST(req) {
         name: 'Test User'
       };
     }
-    
+   
     return NextResponse.json(response);
   } catch (error) {
     console.error("Error creating payment order:", error);
@@ -119,16 +122,17 @@ export async function PUT(req) {
   try {
     const { db } = await connectToDatabase();
     const payload = await req.json();
-    
+   
     // Extract payment details
     const { order_id, status, payment_id } = payload;
-
+    
     // Determine order status based on payment status
-    let orderStatus, userPaymentStatus;
+    let orderStatus, userPaymentStatus, redirectUrl;
     switch(status) {
       case 'captured':
         orderStatus = 'paid';
         userPaymentStatus = 'paid';
+        redirectUrl = '/workshop';  // Add redirect URL for successful payment
         break;
       case 'failed':
         orderStatus = 'failed';
@@ -143,13 +147,13 @@ export async function PUT(req) {
     const ordersCollection = db.collection("orders");
     const orderUpdateResult = await ordersCollection.updateOne(
       { orderId: order_id },
-      { 
-        $set: { 
+      {
+        $set: {
           status: orderStatus,
           paymentId: payment_id,
           paymentStatus: status,
-          updatedAt: new Date() 
-        } 
+          updatedAt: new Date()
+        }
       }
     );
 
@@ -157,11 +161,11 @@ export async function PUT(req) {
     const usersCollection = db.collection("users");
     const userUpdateResult = await usersCollection.updateOne(
       { paymentOrderId: order_id },
-      { 
-        $set: { 
+      {
+        $set: {
           paymentStatus: userPaymentStatus,
           paymentCompletedAt: status === 'captured' ? new Date() : null
-        } 
+        }
       }
     );
 
@@ -173,10 +177,11 @@ export async function PUT(req) {
     }
 
     return NextResponse.json(
-      { 
+      {
         message: "Payment status updated successfully",
         orderStatus,
-        userPaymentStatus
+        userPaymentStatus,
+        redirectUrl  // Include redirect URL in response
       },
       { status: 200 }
     );

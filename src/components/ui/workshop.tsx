@@ -1,27 +1,46 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
 import Image from "next/legacy/image";
-import Link from 'next/link';
+import Link from "next/link";
 
-const WorkshopLogin = () => {
-  const [timeLeft, setTimeLeft] = useState(24 * 60 * 60); // 24 hours in seconds
+const WorkshopLogin: React.FC = () => {
+  const targetDate = new Date("2025-01-26T17:00:00");
+  const [timeLeft, setTimeLeft] = useState<number | null>(null);
 
   useEffect(() => {
+    const calculateTimeLeft = () => {
+      const now = new Date();
+      return Math.max(0, Math.floor((targetDate.getTime() - now.getTime()) / 1000));
+    };
+
+    // Initialize countdown on the client side
+    setTimeLeft(calculateTimeLeft());
+
     const timer = setInterval(() => {
-      setTimeLeft((prevTime) => (prevTime > 0 ? prevTime - 1 : 0));
+      setTimeLeft(calculateTimeLeft());
     }, 1000);
 
     return () => clearInterval(timer);
-  }, []);
+  }, [targetDate]);
 
   const formatTime = (time: number) => {
-    const hours = Math.floor(time / 3600);
+    const days = Math.floor(time / (24 * 3600));
+    const hours = Math.floor((time % (24 * 3600)) / 3600);
     const minutes = Math.floor((time % 3600) / 60);
     const seconds = time % 60;
-    return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+    return {
+      days: days.toString().padStart(2, "0"),
+      hours: hours.toString().padStart(2, "0"),
+      minutes: minutes.toString().padStart(2, "0"),
+      seconds: seconds.toString().padStart(2, "0"),
+    };
   };
+
+  if (timeLeft === null) return null; // Avoid rendering during hydration mismatch
+
+  const formattedTime = formatTime(timeLeft);
 
   return (
     <div className="py-16 px-4 sm:px-6 lg:px-8">
@@ -52,16 +71,19 @@ const WorkshopLogin = () => {
             Immerse yourself in a transformative learning experience. Don't miss out!
           </p>
           <div className="flex justify-center md:justify-start space-x-4 mb-8">
-            {['Hours', 'Minutes', 'Seconds'].map((unit, index) => (
-              <div key={unit} className="text-center">
-                <div className="text-4xl font-bold text-blue-600 dark:text-blue-400">
-                  {formatTime(timeLeft).split(':')[index]}
+            {["Days", "Hours", "Minutes", "Seconds"].map((unit, index) => {
+              const value = Object.values(formattedTime)[index];
+              return (
+                <div key={unit} className="text-center">
+                  <div className="text-4xl font-bold text-blue-600 dark:text-blue-400">
+                    {value}
+                  </div>
+                  <div className="text-sm text-gray-500 dark:text-gray-400">{unit}</div>
                 </div>
-                <div className="text-sm text-gray-500 dark:text-gray-400">{unit}</div>
-              </div>
-            ))}
+              );
+            })}
           </div>
-          <Link href='/workshop'>
+          <Link href="/workshop">
             <motion.button
               whileHover={{ scale: 1.05, boxShadow: "0 0 15px rgba(59, 130, 246, 0.5)" }}
               whileTap={{ scale: 0.95 }}
@@ -71,7 +93,6 @@ const WorkshopLogin = () => {
               <span className="absolute inset-0 bg-blue-500 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-300"></span>
             </motion.button>
           </Link>
-          
         </div>
       </motion.div>
     </div>

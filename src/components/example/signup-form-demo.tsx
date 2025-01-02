@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
 import Link from "next/link";
 import { Loader2 } from 'lucide-react';
+import { useRouter } from 'next/navigation'; // Add this import
 
 interface FormData {
   firstname: string;
@@ -54,6 +55,7 @@ declare global {
 }
 
 export default function SignupFormDemo() {
+  const router = useRouter();
   const [formData, setFormData] = useState<FormData>({
     firstname: "",
     lastname: "",
@@ -64,18 +66,14 @@ export default function SignupFormDemo() {
 
   const [registrationSuccess, setRegistrationSuccess] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [paymentInProgress, setPaymentInProgress] = useState<boolean>(false); // Added state for payment status
+  const [paymentInProgress, setPaymentInProgress] = useState<boolean>(false);
   const { toast } = useToast();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target;
     
-    // Special handling for phone number to ensure only digits
     if (id === 'phoneNumber') {
-      // Remove any non-digit characters
       const sanitizedValue = value.replace(/\D/g, '');
-      
-      // Limit to 10 digits for Indian phone numbers
       const truncatedValue = sanitizedValue.slice(0, 10);
       
       setFormData((prevData) => ({
@@ -90,9 +88,7 @@ export default function SignupFormDemo() {
     }
   };
 
-  // Validation function for phone number
   const isValidPhoneNumber = (phoneNumber: string) => {
-    // Indian phone number validation: 10 digits starting with 6, 7, 8, or 9
     const phoneRegex = /^[6-9]\d{9}$/;
     return phoneRegex.test(phoneNumber);
   };
@@ -101,7 +97,6 @@ export default function SignupFormDemo() {
     e.preventDefault();
     setIsLoading(true);
 
-    // Phone number validation before submission
     if (!isValidPhoneNumber(formData.phoneNumber)) {
       toast({
         title: "Invalid Phone Number",
@@ -144,18 +139,15 @@ export default function SignupFormDemo() {
   };
 
   const handlePayment = async () => {
-    setPaymentInProgress(true); // Disable the button once clicked
+    setPaymentInProgress(true);
     setIsLoading(true);
 
     try {
-      // Use test amount of ₹10 instead of ₹199
-      const testAmount = 10;
-
+      // Use the correct amount (199 as defined in backend)
       const response = await fetch("/api/razorpay", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          amount: testAmount,
           email: formData.email,
           name: `${formData.firstname} ${formData.lastname}`,
         }),
@@ -163,48 +155,49 @@ export default function SignupFormDemo() {
 
       const data = await response.json();
 
+      // Check if user has already paid
+      if (response.status === 400 && data.redirectUrl) {
+        router.push(data.redirectUrl);
+        return;
+      }
+
       if (!response.ok) throw new Error(data.message);
 
       const options: RazorpayOptions = {
         key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID!,
-        amount: testAmount * 100, // Amount in paise (₹10)
+        amount: data.amount, // Use amount from server response
         currency: "INR",
-        name: "Workshop Registration ",
-        description: "Workshop Registration Fee ",
+        name: "Workshop Registration",
+        description: "Workshop Registration Fee",
         order_id: data.id,
-        handler: async (response: RazorpayResponse) => {
+        handler: async function(response: RazorpayResponse) {
           try {
-            const verifyResponse = await fetch("/api/verify-payment", {
-              method: "POST",
+            const webhookResponse = await fetch("/api/razorpay", {
+              method: "PUT",
               headers: { "Content-Type": "application/json" },
               body: JSON.stringify({
-                ...response,
-                email: formData.email,
+                order_id: data.id,
+                payment_id: response.razorpay_payment_id,
+                status: 'captured'
               }),
             });
 
-            if (verifyResponse.ok) {
+            const result = await webhookResponse.json();
+            
+            if (webhookResponse.ok && result.redirectUrl) {
               toast({
                 title: "Payment Successful",
-                description: "Your test payment is complete!",
+                description: "Redirecting to workshop page...",
                 variant: "default",
               });
-              // Reset form and show registration success message
-              setFormData({
-                firstname: "",
-                lastname: "",
-                phoneNumber: "",
-                email: "",
-                password: "",
-              });
-              setRegistrationSuccess(false); // Reset registration success flag
-              // Redirect to success page or dashboard
-              window.location.href = "/workshop/success";
+              router.push(result.redirectUrl);
+            } else {
+              throw new Error(result.message || 'Payment verification failed');
             }
           } catch (error) {
             toast({
               title: "Verification Failed",
-              description: "Payment verification failed",
+              description: (error as Error).message || "Payment verification failed",
               variant: "destructive",
             });
           }
@@ -212,10 +205,12 @@ export default function SignupFormDemo() {
         prefill: {
           name: `${formData.firstname} ${formData.lastname}`,
           email: formData.email,
-          // Test card details for easy testing
-          "card[number]": '4111111111111111',
-          "card[expiry]": '12/25',
-          "card[cvv]": '123',
+          // Use test card from server response if available
+          ...(data.testCard && {
+            "card[number]": data.testCard.number,
+            "card[expiry]": data.testCard.expiry,
+            "card[cvv]": data.testCard.cvv,
+          }),
         },
         theme: {
           color: "#3399cc",
@@ -225,7 +220,6 @@ export default function SignupFormDemo() {
         }
       };
 
-      // Load Razorpay script if not already loaded
       if (!window.Razorpay) {
         await loadRazorpayScript();
       }
@@ -240,10 +234,10 @@ export default function SignupFormDemo() {
       });
     } finally {
       setIsLoading(false);
+      setPaymentInProgress(false);
     }
   };
 
-  // Function to load Razorpay script
   const loadRazorpayScript = (): Promise<void> => {
     return new Promise((resolve) => {
       const script = document.createElement('script');
@@ -259,7 +253,7 @@ export default function SignupFormDemo() {
         Workshop Registration
       </h1>
       <p className="text-neutral-600 text-sm max-w-sm mt-2 dark:text-neutral-300">
-        Register for the workshop {registrationSuccess ? '(Test Payment: ₹10)' : '(₹199 only)'}
+        Register for the workshop (₹199 only)
       </p>
 
       <form className="my-8" onSubmit={handleSubmit}>
@@ -301,7 +295,6 @@ export default function SignupFormDemo() {
             maxLength={10}
             title="10-digit mobile number starting with 6, 7, 8, or 9"
           />
-          
         </LabelInputContainer>
 
         <LabelInputContainer className="mb-4">
@@ -313,19 +306,6 @@ export default function SignupFormDemo() {
             value={formData.email}
             onChange={handleChange}
             required
-          />
-        </LabelInputContainer>
-
-        <LabelInputContainer className="mb-4">
-          <Label htmlFor="password">Password</Label>
-          <Input
-            id="password"
-            placeholder="••••••••"
-            type="password"
-            value={formData.password}
-            onChange={handleChange}
-            required
-            minLength={6}
           />
         </LabelInputContainer>
 
@@ -345,7 +325,7 @@ export default function SignupFormDemo() {
             type="button"
             onClick={handlePayment}
             className="bg-gradient-to-br from-green-500 to-green-700 text-white w-full rounded-md h-10 font-medium flex items-center justify-center"
-            disabled={isLoading || paymentInProgress} // Disable button if payment is in progress
+            disabled={isLoading || paymentInProgress}
           >
             {isLoading ? (
               <Loader2 className="mr-2 h-4 w-4 animate-spin" />

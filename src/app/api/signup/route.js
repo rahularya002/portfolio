@@ -22,9 +22,9 @@ function validateInput(data) {
   if (!phoneNumber || !/^\+?[1-9]\d{1,14}$/.test(phoneNumber)) {
     throw new Error("Invalid phone number");
   }
-  if (!password || password.length < 8) {
-    throw new Error("Password must be at least 8 characters long");
-  }
+  // if (!password || password.length < 8) {
+  //   throw new Error("Password must be at least 8 characters long");
+  // }
 }
 
 export async function GET() {
