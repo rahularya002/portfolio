@@ -8,10 +8,12 @@
 
   interface Registration {
     _id: string;
-    firstname: string;
-    lastname: string;
+    name: string;
     email: string;
+    amount: string;
     createdAt: string;
+    paymentMethod: string;
+    phoneNumber: string;
     paymentStatus?: 'pending' | 'completed';
   }
 
@@ -199,15 +201,27 @@
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                   <div>
                     <p className="text-sm font-medium text-neutral-600 dark:text-neutral-300">Name</p>
-                    <p className="mt-1 font-semibold text-neutral-800 dark:text-neutral-200">{registration.firstname} {registration.lastname}</p>
+                    <p className="mt-1 font-semibold text-neutral-800 dark:text-neutral-200">{registration.name}</p>
                   </div>
                   <div>
                     <p className="text-sm font-medium text-neutral-600 dark:text-neutral-300">Email</p>
                     <p className="mt-1 text-neutral-800 dark:text-neutral-200">{registration.email}</p>
                   </div>
                   <div>
+                    <p className="text-sm font-medium text-neutral-600 dark:text-neutral-300">contact</p>
+                    <p className="mt-1 text-neutral-800 dark:text-neutral-200">{registration.phoneNumber}</p>
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-neutral-600 dark:text-neutral-300">amount</p>
+                    <p className="mt-1 text-neutral-800 dark:text-neutral-200">{registration.amount}</p>
+                  </div>
+                  <div>
                     <p className="text-sm font-medium text-neutral-600 dark:text-neutral-300">Registered On</p>
                     <p className="mt-1 text-neutral-800 dark:text-neutral-200">{new Date(registration.createdAt).toLocaleDateString()}</p>
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-neutral-600 dark:text-neutral-300">Payment Method</p>
+                    <p className="mt-1 text-neutral-800 dark:text-neutral-200">{registration.paymentMethod}</p>
                   </div>
                   <div>
                     <p className="text-sm font-medium text-neutral-600 dark:text-neutral-300">Status</p>

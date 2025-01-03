@@ -9,7 +9,7 @@ const cache = new LRUCache({
 });
 
 function validateInput(data) {
-  const { firstname, lastname, email, phoneNumber, password } = data;
+  const { firstname, lastname, email, phoneNumber } = data;
   if (!firstname || firstname.length < 2) {
     throw new Error("First name is required and must be at least 2 characters long");
   }
@@ -30,24 +30,46 @@ function validateInput(data) {
 export async function GET() {
   try {
     const { db } = await connectToDatabase();
-    const collection = db.collection("users");
-    const registrations = await collection.find({}, { projection: { password: 0 } }).sort({ createdAt: -1 }).toArray();
-    const formattedRegistrations = registrations.map(reg => ({
-      _id: reg._id.toString(),
-      firstname: reg.firstname,
-      lastname: reg.lastname,
-      phoneNumber: reg.phoneNumber,
-      email: reg.email,
-      createdAt: reg.createdAt,
-      paymentStatus: reg.status === "notPaid" ? "pending" : "completed",
-    }));
+    const ordersCollection = db.collection("orders");
+    const usersCollection = db.collection("users");
+
+    // Get all orders
+    const orders = await ordersCollection
+      .find({}, { projection: { password: 0 } })
+      .sort({ createdAt: -1 })
+      .toArray();
+
+    // Create an array of promises to fetch user data for each order
+    const formattedRegistrations = await Promise.all(
+      orders.map(async (reg) => {
+        // Find the user associated with this order
+        const user = await usersCollection.findOne(
+          { email: reg.email },
+          { projection: { phoneNumber: 1 } }
+        );
+
+        return {
+          id: reg._id.toString(),
+          name: reg.name,
+          email: reg.email,
+          amount: reg.amount,
+          paymentMethod: reg.paymentMethod,
+          createdAt: reg.createdAt,
+          paymentStatus: reg.status === "created" ? "pending" : "completed",
+          phoneNumber: user?.phoneNumber || null, // Add phone number from user collection
+        };
+      })
+    );
+
     return NextResponse.json(formattedRegistrations, { status: 200 });
   } catch (error) {
     console.error("Error in GET request:", error.message);
-    return NextResponse.json({ message: "Internal Server Error", error: error.message }, { status: 500 });
+    return NextResponse.json(
+      { message: "Internal Server Error", error: error.message },
+      { status: 500 }
+    );
   }
 }
-
 export async function POST(req) {
   try {
     const { db } = await connectToDatabase();
