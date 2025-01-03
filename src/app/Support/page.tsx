@@ -1,9 +1,10 @@
-import { Mail, Phone, MessageCircle, LifeBuoy, MapPin } from "lucide-react"
+import { Mail, Phone, MessageCircle, LifeBuoy, MapPin, ArrowLeft } from "lucide-react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import Contact from "@/components/Contact"
 import WorkshopNav from "@/components/component/workshop-nav"
 import Footer from "@/components/Footer"
+import Link from "next/link"
 
 export default function Component() {
   return (
@@ -91,6 +92,11 @@ export default function Component() {
         </div>
       </div>
       <Contact />
+      <div className="flex items-center justify-center py-8">
+        <Link href="/workshop">
+          <button className="p-3 bg-gray-500/20 border-b rounded-md flex gap-2"><ArrowLeft />Back to home</button>
+        </Link>
+      </div>
       <Footer />
     </div>
   )
